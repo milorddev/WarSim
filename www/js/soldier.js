@@ -5,7 +5,7 @@ export class Soldier extends Base {
         super(engine);
         this.name = 'soldier';
         this.unitType = 'melee';
-        this.movementSpeed = 50;
+        // this.movementSpeed = 2;
         this.attackDamage = 25 + (Math.random() * 10);
     }
 }

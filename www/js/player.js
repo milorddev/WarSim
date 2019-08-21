@@ -12,7 +12,7 @@ export class Player {
             y: 0,
             width: 0,
             height: 0
-          };
+        };
     }
 
     init() {
@@ -25,9 +25,9 @@ export class Player {
                 x: 0, y: cHeight - this.areaHeight, width: cWidth, height: this.areaHeight
             };
             } else {
-            this.spawnArea = {
-                x: 0, y: 0, width: cWidth, height: this.areaHeight
-            };
+                this.spawnArea = {
+                    x: 0, y: 0, width: cWidth, height: this.areaHeight
+                };
             }
             console.log('spawnArea', this.spawnArea);
             resolve();
@@ -41,15 +41,16 @@ export class Player {
 
     spawnUnit(unit) {
         setTimeout(() => {
-          // console.log('unit', unit);
           const newUnit = new unit.instance(this.engine);
-          newUnit.teamIndex = this.teamIndex;
+          newUnit.teamIndex = this.teamIndex;unit.interval
           newUnit.location = {
             x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
             y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
           };
           newUnit.init();
-          unit.list.push(newUnit);
+          const unitUUID = this.engine.generateUUID();
+          newUnit.uuid = unitUUID;
+          this.engine.unitStack[unitUUID] = newUnit;
           this.spawnUnit(unit);
         }, unit.interval);
       }

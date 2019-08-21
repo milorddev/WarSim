@@ -1,13 +1,14 @@
+import { Soldier } from './soldier.js';
 
 export class Engine {
     constructor() {
         console.log('engine service started');
-
+        this.unitStack = {};
         this.spawnable = {
             soldier: {
               enabled: true,
-              interval: 1000,
-              list: []
+              interval: 100,
+              instance: Soldier
             }
           };
     }
@@ -26,7 +27,7 @@ export class Engine {
     tick() {
         requestAnimationFrame(() => {
             this.clearFrame();
-            this.drawFrame();
+            this.updateFrame();
             this.tick();
         });
     }
@@ -36,24 +37,37 @@ export class Engine {
     }
     
     updateFrame() {
-        console.log('placeholder');
+      const keys = Object.keys(this.unitStack);
+      for(var i in keys){
+        const unit = this.unitStack[keys[i]];
+        if (unit) {
+          unit.tick();
+          this.drawFrame(unit);
+        }
+      }
     }
     
-    drawFrame() {
-        const spawnableUnits = Object.keys(this.spawnable);
-        spawnableUnits.forEach(spawned => {
-          this.spawnable[spawned].list.forEach(unit => {
-            this.context.beginPath();
-            this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);
-            if (unit.teamIndex === 1) {
-              this.context.fillStyle = '#3370d4'; // blue
-            } else {
-              this.context.fillStyle = '#c82124'; // red
-            }
-            this.context.closePath();
-            this.context.fill();
-            this.context.stroke();
-          });
-        });
+    drawFrame(unit) {
+      // const keys = Object.keys(this.unitStack);
+      // for(var i in keys){
+        
+        this.context.beginPath();
+        this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);
+        if (unit.teamIndex === 1) {
+          this.context.fillStyle = '#3370d4'; // blue
+        } else {
+          this.context.fillStyle = '#c82124'; // red
+        }
+        this.context.closePath();
+        this.context.fill();
+        this.context.stroke();
+      // }
+    }
+
+    generateUUID() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
     }
 }

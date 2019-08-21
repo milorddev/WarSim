@@ -1,6 +1,5 @@
 import { Engine } from './engine.js';
 import { Player } from './player.js';
-import { Soldier } from './soldier.js';
 
 class App {
     constructor() {
@@ -35,7 +34,7 @@ class App {
             inits.push(item.init());
           });
           Promise.all(inits).then(ready => {
-            Object.assign(this.engine.spawnable.soldier, {instance: Soldier});
+            //Object.assign(this.engine.spawnable.soldier, {instance: Soldier});
     
             this.playerList.forEach(item => {
               item.beginMatch();
