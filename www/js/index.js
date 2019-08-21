@@ -19,7 +19,6 @@ class App {
 
     setupGame() {
         if (this.numberOfPlayers === 2) {
-            
           const player = new Player(this.engine);
           player.isPlayer = true;
           player.teamIndex = 1;
@@ -34,8 +33,6 @@ class App {
             inits.push(item.init());
           });
           Promise.all(inits).then(ready => {
-            //Object.assign(this.engine.spawnable.soldier, {instance: Soldier});
-    
             this.playerList.forEach(item => {
               item.beginMatch();
             });

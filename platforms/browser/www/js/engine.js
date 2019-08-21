@@ -11,6 +11,7 @@ export class Engine {
               instance: Soldier
             }
           };
+        this.pokegif = gifler('../img/poke.gif');
     }
 
     initCanvasElement(canvasElement) {
@@ -48,20 +49,20 @@ export class Engine {
     }
     
     drawFrame(unit) {
-      // const keys = Object.keys(this.unitStack);
-      // for(var i in keys){
-        
-        this.context.beginPath();
-        this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);
-        if (unit.teamIndex === 1) {
-          this.context.fillStyle = '#3370d4'; // blue
-        } else {
-          this.context.fillStyle = '#c82124'; // red
-        }
-        this.context.closePath();
-        this.context.fill();
-        this.context.stroke();
+      this.context.beginPath();
+      this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);
+      this.pokegif.frames('#canvas', (ctx, frame) => {
+        console.log('ctx', ctx);
+        console.log('frame', frame);
+      });
+      // if (unit.teamIndex === 1) {
+      //   this.context.fillStyle = '#3370d4'; // blue
+      // } else {
+      //   this.context.fillStyle = '#c82124'; // red
       // }
+      this.context.closePath();
+      this.context.fill();
+      this.context.stroke();
     }
 
     generateUUID() {
