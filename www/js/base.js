@@ -21,6 +21,12 @@ export class Base {
 
     init() {
         this.changeState();
+        gifler('../img/poke.gif').get().then(data => {
+          this.testGif = data;
+          setInterval(() => {
+            this.testGif._advanceFrame();
+          }, 100);
+        });
     }
 
     tick() {
@@ -29,6 +35,7 @@ export class Base {
         this.attackTarget = null;
         this.state = 'NONE';
       }
+
     }
 
     idle() {
