@@ -5,7 +5,8 @@
   "description": "War Simulation game",
   "main": "index.js",
   "scripts": {
-    "start": "parcel src/index.html --out-dir www"
+    "start": "parcel src/index.html --out-dir www",
+    "build": "./node_modules/.bin/tsc --build tsconfig.json"
   },
   "keywords": [
     "ecosystem:cordova"

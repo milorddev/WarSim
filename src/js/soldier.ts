@@ -1,4 +1,4 @@
-import { Base } from './base.js';
+import { Base } from './base';
 
 export class Soldier extends Base {
     constructor(engine) {

@@ -1,5 +1,5 @@
-import { Engine } from './engine.js';
-import { Player } from './player.js';
+import { Engine } from './engine';
+import { Player } from './player';
 
 class App {
 

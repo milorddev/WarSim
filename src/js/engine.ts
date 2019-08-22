@@ -1,5 +1,5 @@
-import { Soldier } from './soldier.js';
-import { Base } from './base.js';
+import { Soldier } from './soldier';
+import { Base } from './base';
 // import { gifFrames } from 'gif-frames'
 export class Engine {
 
