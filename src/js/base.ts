@@ -1,8 +1,25 @@
+import { Engine } from "./engine";
 
 export class Base {
+  engine: Engine;
+  uuid:string;
+  health: number;
+  coins: number;
+  name: string;
+  unitType: string;
+  location: {x: number, y: number};
+  teamIndex: number;
+  state: string;
+  stateTimer: {idle: boolean, charge: boolean, fight: boolean};
+  
+  movementSpeed: number;
+  attackTarget: Base;
+  attackRadius: number;
+  attackSpeed: number;
+  attackDamage: number;
+
     constructor(engine) {
         this.engine = engine;
-        this.uuid = this.uuidv4;
         this.health = 100;
         this.coins = 1;
         this.name = '';
@@ -10,23 +27,23 @@ export class Base {
         this.location = {x: 0, y: 0};
         this.teamIndex = 0;
         this.state = 'IDLE';
-        this.stateTimer = {idle: false, charge: false, fight: false};
 
         this.movementSpeed = 30;
         this.attackTarget = null;
         this.attackRadius = 30;
         this.attackSpeed = 60;
         this.attackDamage = 20;
+        this.stateTimer = {idle: false, charge: false, fight: false};
     }
 
     init() {
         this.changeState();
-        gifler('../img/poke.gif').get().then(data => {
-          this.testGif = data;
-          setInterval(() => {
-            this.testGif._advanceFrame();
-          }, 100);
-        });
+        // gifler('../img/poke.gif').get().then(data => {
+        //   this.testGif = data;
+        //   setInterval(() => {
+        //     this.testGif._advanceFrame();
+        //   }, 100);
+        // });
     }
 
     tick() {
@@ -156,12 +173,20 @@ export class Base {
     }
     
     detectEnemy() {
-      const unitList = Object.values(this.engine.unitStack);
-      const instigator = unitList.find(unit => {
-        const xCalc = Math.pow(unit.location.x - this.location.x, 2);
-        const yCalc = Math.pow(unit.location.y - this.location.y, 2);
-        return  (xCalc + yCalc  < Math.pow(this.attackRadius * 2, 2) && unit.teamIndex !== this.teamIndex);
-      });
+      const getInstigator = () => {
+        const unitList = Object.keys(this.engine.unitStack);
+        for (let key in this.engine.unitStack) {
+          const unit: Base = this.engine.unitStack[key];
+          const xCalc = Math.pow(unit.location.x - this.location.x, 2);
+          const yCalc = Math.pow(unit.location.y - this.location.y, 2);
+          if (xCalc + yCalc  < Math.pow(this.attackRadius * 2, 2) && unit.teamIndex !== this.teamIndex) {
+            return unit;
+          }
+          return undefined;
+
+        }
+      }
+      const instigator = getInstigator();
       if (instigator && instigator.health > 0) {
         this.attackTarget = instigator;
         this.state = 'CHARGE';

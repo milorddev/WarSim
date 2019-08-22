@@ -2,10 +2,12 @@ import { Engine } from './engine.js';
 import { Player } from './player.js';
 
 class App {
-    constructor() {
-        this.numberOfPlayers = 2;
-        this.playerList = [];
 
+  engine: Engine;
+  numberOfPlayers: number = 2;
+  playerList: Array<Player> = []
+
+    constructor() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this));
     }
 
