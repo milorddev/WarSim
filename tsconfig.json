@@ -3,6 +3,16 @@
         "target": "es2015",
         "sourceMap": true,
         "outDir": "www",
-        "rootDir": "src"
+        "rootDir": "src",
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "typeRoots": [
+            "node_modules/@types"
+        ],
     }
 }

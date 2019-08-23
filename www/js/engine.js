@@ -1,5 +1,5 @@
 import { Soldier } from './soldier.js';
-// import { gifFrames } from 'gif-frames'
+import { gifFrames } from 'gif-frames';
 export var Engine;
 (function (Engine) {
     Engine.unitStack = {};
@@ -21,23 +21,24 @@ export var Engine;
             this.canvas.width = document.body.clientWidth;
             this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.10);
             this.context = this.canvas.getContext('2d');
-            // this.initAnimations();
+            this.initAnimations();
             this.tick();
             resolve(true);
         });
     }
     Engine.initCanvasElement = initCanvasElement;
-    // initAnimations() {
-    //   new Promise((resolve, reject) => {
-    //     const soldier = {
-    //       idle: gifFrames({url: '../img/poke.gif', frames: 'all', outputType: 'canvas'}).then(frameData => {
-    //         frameData.forEach((frame) => {
-    //           console.log(frame);
-    //         });
-    //       })
-    //     }
-    //   });
-    // }
+    function initAnimations() {
+        new Promise((resolve, reject) => {
+            const soldier = {
+                idle: gifFrames({ url: '../img/poke.gif', frames: 'all', outputType: 'canvas' }).then(frameData => {
+                    frameData.forEach((frame) => {
+                        console.log(frame);
+                    });
+                })
+            };
+        });
+    }
+    Engine.initAnimations = initAnimations;
     function tick() {
         requestAnimationFrame(() => {
             this.clearFrame();
