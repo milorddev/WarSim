@@ -1,30 +1,32 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const soldier_1 = require("./soldier");
+import { Soldier } from './soldier.js';
 // import { gifFrames } from 'gif-frames'
-class Engine {
-    constructor() {
-        this.unitStack = {};
+export var Engine;
+(function (Engine) {
+    Engine.unitStack = {};
+    function initEngine() {
         console.log('engine service started');
         this.spawnable = {
             soldier: {
                 enabled: true,
                 interval: 1000,
-                instance: new soldier_1.Soldier(new Engine)
+                instance: Soldier
             }
         };
     }
-    initCanvasElement(canvasElement) {
+    Engine.initEngine = initEngine;
+    function initCanvasElement(canvasElement) {
         return new Promise((resolve, reject) => {
+            this.initEngine();
             this.canvas = canvasElement;
             this.canvas.width = document.body.clientWidth;
             this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.10);
             this.context = this.canvas.getContext('2d');
             // this.initAnimations();
-            // this.tick();
-            resolve();
+            this.tick();
+            resolve(true);
         });
     }
+    Engine.initCanvasElement = initCanvasElement;
     // initAnimations() {
     //   new Promise((resolve, reject) => {
     //     const soldier = {
@@ -36,17 +38,19 @@ class Engine {
     //     }
     //   });
     // }
-    tick() {
+    function tick() {
         requestAnimationFrame(() => {
             this.clearFrame();
             this.updateFrame();
             this.tick();
         });
     }
-    clearFrame() {
+    Engine.tick = tick;
+    function clearFrame() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
-    updateFrame() {
+    Engine.clearFrame = clearFrame;
+    function updateFrame() {
         const keys = Object.keys(this.unitStack);
         for (var i in keys) {
             const unit = this.unitStack[keys[i]];
@@ -56,7 +60,8 @@ class Engine {
             }
         }
     }
-    drawFrame(unit) {
+    Engine.updateFrame = updateFrame;
+    function drawFrame(unit) {
         // if (unit.testGif) {
         //   const buffer = gifler.Animator.createBufferCanvas(
         //     unit.testGif._frames[unit.testGif._frameIndex],
@@ -77,12 +82,13 @@ class Engine {
         this.context.fill();
         this.context.stroke();
     }
-    generateUUID() {
+    Engine.drawFrame = drawFrame;
+    function generateUUID() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
     }
-}
-exports.Engine = Engine;
+    Engine.generateUUID = generateUUID;
+})(Engine || (Engine = {}));
 //# sourceMappingURL=engine.js.map

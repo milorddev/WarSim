@@ -1,13 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Player {
-    constructor(engine) {
+import { Engine } from "./engine.js";
+export class Player {
+    constructor() {
         this.teamIndex = 0;
         this.isPlayer = false;
         this.areaHeight = 50;
         this.health = 1000;
         this.coins = 0;
-        this.engine = engine;
+        this.engine = Engine;
         this.teamIndex = 0;
         this.isPlayer = false;
         this.areaHeight = 50;
@@ -45,7 +44,7 @@ class Player {
     }
     spawnUnit(unit) {
         setTimeout(() => {
-            const newUnit = new unit.instance(this.engine);
+            const newUnit = new unit.instance();
             newUnit.teamIndex = this.teamIndex;
             newUnit.location = {
                 x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
@@ -59,5 +58,4 @@ class Player {
         }, unit.interval);
     }
 }
-exports.Player = Player;
 //# sourceMappingURL=player.js.map

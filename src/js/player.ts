@@ -1,8 +1,8 @@
-import { Engine } from "./engine";
+import { Engine } from "./engine.js";
 
 export class Player {
 
-    engine: Engine;
+    engine: any;
     teamIndex: number = 0;
     isPlayer: boolean = false;
     areaHeight: number = 50;
@@ -15,8 +15,8 @@ export class Player {
         height: number
     };
 
-    constructor(engine) {
-        this.engine = engine;
+    constructor() {
+        this.engine = Engine;
         this.teamIndex = 0;
         this.isPlayer = false;
         this.areaHeight = 50;
@@ -56,7 +56,7 @@ export class Player {
 
     spawnUnit(unit) {
         setTimeout(() => {
-          const newUnit = new unit.instance(this.engine);
+          const newUnit = new unit.instance();
           newUnit.teamIndex = this.teamIndex;
           newUnit.location = {
             x: this.spawnArea.x + (Math.random() * this.spawnArea.width),

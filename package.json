@@ -5,7 +5,7 @@
   "description": "War Simulation game",
   "main": "index.js",
   "scripts": {
-    "start": "parcel src/index.html --out-dir www",
+    "start": "./node_modules/.bin/tsc --build tsconfig.json --watch ",
     "build": "./node_modules/.bin/tsc --build tsconfig.json"
   },
   "keywords": [

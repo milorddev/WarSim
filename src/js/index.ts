@@ -1,9 +1,9 @@
-import { Engine } from './engine';
-import { Player } from './player';
+import { Engine } from './engine.js';
+import { Player } from './player.js';
 
 class App {
 
-  engine: Engine;
+  engine: any;
   numberOfPlayers: number = 2;
   playerList: Array<Player> = []
 
@@ -12,7 +12,7 @@ class App {
     }
 
     onDeviceReady() {
-        this.engine = new Engine();
+        this.engine = Engine;
         const canvas = document.getElementById('canvas');
         this.engine.initCanvasElement(canvas).then( () => {
             this.setupGame();
@@ -21,12 +21,12 @@ class App {
 
     setupGame() {
         if (this.numberOfPlayers === 2) {
-          const player = new Player(this.engine);
+          const player = new Player();
           player.isPlayer = true;
           player.teamIndex = 1;
           this.playerList.push(player);
     
-          const enemy = new Player(this.engine);
+          const enemy = new Player();
           enemy.teamIndex = 2;
           enemy.isPlayer = false;
           this.playerList.push(enemy);

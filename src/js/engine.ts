@@ -1,38 +1,39 @@
-import { Soldier } from './soldier';
-import { Base } from './base';
+import { Soldier } from './soldier.js';
+import { Base } from './base.js';
 // import { gifFrames } from 'gif-frames'
-export class Engine {
+export namespace Engine {
 
-  canvas: HTMLCanvasElement;
-  context: CanvasRenderingContext2D;
-  unitStack: object = {};
-  spawnable: {
+  export let canvas: HTMLCanvasElement;
+  export let context: CanvasRenderingContext2D;
+  export const unitStack: object = {};
+  export let spawnable: {
     soldier: {
       enabled: boolean,
       interval: number,
       instance: Base
     }
   };
-    constructor() {
+    export function initEngine() {
         console.log('engine service started');
         this.spawnable = {
           soldier: {
             enabled: true,
             interval: 1000,
-            instance: new Soldier(new Engine)
+            instance: Soldier
           }
         };
     }
 
-    initCanvasElement(canvasElement) {
-        return new Promise((resolve, reject) => {
+    export function initCanvasElement(canvasElement: HTMLCanvasElement) {
+        return new Promise<boolean>((resolve, reject) => {
+            this.initEngine();
             this.canvas = canvasElement;
             this.canvas.width = document.body.clientWidth;
             this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.10);
             this.context = this.canvas.getContext('2d');
             // this.initAnimations();
-            // this.tick();
-            resolve();
+            this.tick();
+            resolve(true);
         });
       }
 
@@ -48,7 +49,7 @@ export class Engine {
     //   });
     // }
 
-    tick() {
+    export function tick() {
         requestAnimationFrame(() => {
             this.clearFrame();
             this.updateFrame();
@@ -56,11 +57,11 @@ export class Engine {
         });
     }
     
-    clearFrame() {
+    export function clearFrame() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
     
-    updateFrame() {
+    export function updateFrame() {
       const keys = Object.keys(this.unitStack);
       for(var i in keys){
         const unit = this.unitStack[keys[i]];
@@ -71,7 +72,7 @@ export class Engine {
       }
     }
     
-    drawFrame(unit: Base) {
+    export function drawFrame(unit: Base) {
       // if (unit.testGif) {
       //   const buffer = gifler.Animator.createBufferCanvas(
       //     unit.testGif._frames[unit.testGif._frameIndex],
@@ -93,7 +94,7 @@ export class Engine {
       this.context.stroke();
     }
 
-    generateUUID() {
+    export function generateUUID() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);

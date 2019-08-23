@@ -1,7 +1,7 @@
-import { Engine } from "./engine";
+import { Engine } from "./engine.js";
 
 export class Base {
-  engine: Engine;
+  engine: any;
   uuid:string;
   health: number;
   coins: number;
@@ -18,8 +18,8 @@ export class Base {
   attackSpeed: number;
   attackDamage: number;
 
-    constructor(engine) {
-        this.engine = engine;
+    constructor() {
+        this.engine = Engine;
         this.health = 100;
         this.coins = 1;
         this.name = '';
@@ -31,7 +31,7 @@ export class Base {
         this.movementSpeed = 30;
         this.attackTarget = null;
         this.attackRadius = 30;
-        this.attackSpeed = 60;
+        this.attackSpeed = 120;
         this.attackDamage = 20;
         this.stateTimer = {idle: false, charge: false, fight: false};
     }
@@ -173,25 +173,32 @@ export class Base {
     }
     
     detectEnemy() {
-      const getInstigator = () => {
-        const unitList = Object.keys(this.engine.unitStack);
+      // const getInstigator = () => {
         for (let key in this.engine.unitStack) {
           const unit: Base = this.engine.unitStack[key];
           const xCalc = Math.pow(unit.location.x - this.location.x, 2);
           const yCalc = Math.pow(unit.location.y - this.location.y, 2);
           if (xCalc + yCalc  < Math.pow(this.attackRadius * 2, 2) && unit.teamIndex !== this.teamIndex) {
-            return unit;
+            const instigator = unit;
+            if (instigator && instigator.health > 0) {
+              this.attackTarget = instigator;
+              this.state = 'CHARGE';
+              this.changeState();
+            }
           }
-          return undefined;
+           //return undefined;
 
         }
-      }
-      const instigator = getInstigator();
-      if (instigator && instigator.health > 0) {
-        this.attackTarget = instigator;
-        this.state = 'CHARGE';
-        this.changeState();
-      }
+      // }
+      // const instigator = getInstigator();
+      // if (instigator && instigator.health > 0) {
+      //   this.attackTarget = instigator;
+      //   this.state = 'CHARGE';
+      //   this.changeState();
+      // } else {
+      //   this.state = 'IDLE';
+      //   this.changeState();
+      // }
     
     }
 }

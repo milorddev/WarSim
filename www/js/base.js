@@ -1,8 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Base {
-    constructor(engine) {
-        this.engine = engine;
+import { Engine } from "./engine.js";
+export class Base {
+    constructor() {
+        this.engine = Engine;
         this.health = 100;
         this.coins = 1;
         this.name = '';
@@ -13,7 +12,7 @@ class Base {
         this.movementSpeed = 30;
         this.attackTarget = null;
         this.attackRadius = 30;
-        this.attackSpeed = 60;
+        this.attackSpeed = 120;
         this.attackDamage = 20;
         this.stateTimer = { idle: false, charge: false, fight: false };
     }
@@ -149,25 +148,31 @@ class Base {
         }
     }
     detectEnemy() {
-        const getInstigator = () => {
-            const unitList = Object.keys(this.engine.unitStack);
-            for (let key in this.engine.unitStack) {
-                const unit = this.engine.unitStack[key];
-                const xCalc = Math.pow(unit.location.x - this.location.x, 2);
-                const yCalc = Math.pow(unit.location.y - this.location.y, 2);
-                if (xCalc + yCalc < Math.pow(this.attackRadius * 2, 2) && unit.teamIndex !== this.teamIndex) {
-                    return unit;
+        // const getInstigator = () => {
+        for (let key in this.engine.unitStack) {
+            const unit = this.engine.unitStack[key];
+            const xCalc = Math.pow(unit.location.x - this.location.x, 2);
+            const yCalc = Math.pow(unit.location.y - this.location.y, 2);
+            if (xCalc + yCalc < Math.pow(this.attackRadius * 2, 2) && unit.teamIndex !== this.teamIndex) {
+                const instigator = unit;
+                if (instigator && instigator.health > 0) {
+                    this.attackTarget = instigator;
+                    this.state = 'CHARGE';
+                    this.changeState();
                 }
-                return undefined;
             }
-        };
-        const instigator = getInstigator();
-        if (instigator && instigator.health > 0) {
-            this.attackTarget = instigator;
-            this.state = 'CHARGE';
-            this.changeState();
+            //return undefined;
         }
+        // }
+        // const instigator = getInstigator();
+        // if (instigator && instigator.health > 0) {
+        //   this.attackTarget = instigator;
+        //   this.state = 'CHARGE';
+        //   this.changeState();
+        // } else {
+        //   this.state = 'IDLE';
+        //   this.changeState();
+        // }
     }
 }
-exports.Base = Base;
 //# sourceMappingURL=base.js.map
