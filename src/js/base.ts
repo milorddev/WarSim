@@ -25,7 +25,7 @@ export class Base {
         this.engine = Engine;
         this.health = 100;
         this.coins = 1;
-        this.size = 32;
+        this.size = 16;
         this.name = '';
         this.unitType = '';
         this.location = {x: 0, y: 0};
@@ -46,13 +46,6 @@ export class Base {
         this.animEngine.newAnimState('idle', '../img/coin.png', 10, 44, 40);
         this.animEngine.changeSprite('idle');
         this.animEngine.startAnimation();
-
-        // gifler('../img/poke.gif').get().then(data => {
-        //   this.testGif = data;
-        //   setInterval(() => {
-        //     this.testGif._advanceFrame();
-        //   }, 100);
-        // });
     }
 
     tick() {
@@ -195,19 +188,6 @@ export class Base {
               this.changeState();
             }
           }
-           //return undefined;
-
         }
-      // }
-      // const instigator = getInstigator();
-      // if (instigator && instigator.health > 0) {
-      //   this.attackTarget = instigator;
-      //   this.state = 'CHARGE';
-      //   this.changeState();
-      // } else {
-      //   this.state = 'IDLE';
-      //   this.changeState();
-      // }
-    
     }
 }

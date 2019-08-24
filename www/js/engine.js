@@ -52,6 +52,12 @@ export var Engine;
         if (unit.animEngine) {
             const buffer = unit.animEngine.bufferCanvas;
             this.context.drawImage(buffer, unit.location.x - unit.animEngine.animOffset.x, unit.location.y - unit.animEngine.animOffset.y);
+            if (unit.teamIndex === 1) {
+                // this.context.fillStyle = '#3370d4'; // blue
+            }
+            else {
+                // this.context.fillStyle = '#c82124'; // red
+            }
         }
         // this.context.beginPath();
         // this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);

@@ -67,6 +67,14 @@ export namespace Engine {
           unit.location.x - unit.animEngine.animOffset.x,
           unit.location.y - unit.animEngine.animOffset.y
         );
+
+        if (unit.teamIndex === 1) {
+          
+          // this.context.fillStyle = '#3370d4'; // blue
+        } else {
+          
+          // this.context.fillStyle = '#c82124'; // red
+        }
       }
 
       // this.context.beginPath();
