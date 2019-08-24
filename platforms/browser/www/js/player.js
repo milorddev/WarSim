@@ -1,7 +1,12 @@
-
+import { Engine } from "./engine.js";
 export class Player {
-    constructor(engine) {
-        this.engine = engine;
+    constructor() {
+        this.teamIndex = 0;
+        this.isPlayer = false;
+        this.areaHeight = 50;
+        this.health = 1000;
+        this.coins = 0;
+        this.engine = Engine;
         this.teamIndex = 0;
         this.isPlayer = false;
         this.areaHeight = 50;
@@ -14,17 +19,17 @@ export class Player {
             height: 0
         };
     }
-
     init() {
         return new Promise((resolve, reject) => {
             const cHeight = this.engine.canvas.height;
             const cWidth = this.engine.canvas.width;
             if (this.isPlayer) {
-            // box on bottom of canvas
-            this.spawnArea = {
-                x: 0, y: cHeight - this.areaHeight, width: cWidth, height: this.areaHeight
-            };
-            } else {
+                // box on bottom of canvas
+                this.spawnArea = {
+                    x: 0, y: cHeight - this.areaHeight, width: cWidth, height: this.areaHeight
+                };
+            }
+            else {
                 this.spawnArea = {
                     x: 0, y: 0, width: cWidth, height: this.areaHeight
                 };
@@ -33,25 +38,24 @@ export class Player {
             resolve();
         });
     }
-
     beginMatch() {
         console.log('beginning match');
         this.spawnUnit(this.engine.spawnable.soldier);
     }
-
     spawnUnit(unit) {
         setTimeout(() => {
-          const newUnit = new unit.instance(this.engine);
-          newUnit.teamIndex = this.teamIndex;unit.interval
-          newUnit.location = {
-            x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
-            y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
-          };
-          newUnit.init();
-          const unitUUID = this.engine.generateUUID();
-          newUnit.uuid = unitUUID;
-          this.engine.unitStack[unitUUID] = newUnit;
-          this.spawnUnit(unit);
+            const newUnit = new unit.instance();
+            newUnit.teamIndex = this.teamIndex;
+            newUnit.location = {
+                x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
+                y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
+            };
+            newUnit.init();
+            const unitUUID = this.engine.generateUUID();
+            newUnit.uuid = unitUUID;
+            this.engine.unitStack[unitUUID] = newUnit;
+            this.spawnUnit(unit);
         }, unit.interval);
-      }
+    }
 }
+//# sourceMappingURL=player.js.map

@@ -1,78 +1,81 @@
 import { Soldier } from './soldier.js';
-
-export class Engine {
-    constructor() {
+export var Engine;
+(function (Engine) {
+    Engine.unitStack = {};
+    function initEngine() {
         console.log('engine service started');
-        this.unitStack = {};
         this.spawnable = {
             soldier: {
-              enabled: true,
-              interval: 1000,
-              instance: Soldier
+                enabled: true,
+                interval: 1000,
+                instance: Soldier
             }
-          };
+        };
     }
-
-    initCanvasElement(canvasElement) {
+    Engine.initEngine = initEngine;
+    function initCanvasElement(canvasElement) {
         return new Promise((resolve, reject) => {
+            this.initEngine();
             this.canvas = canvasElement;
             this.canvas.width = document.body.clientWidth;
             this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.10);
             this.context = this.canvas.getContext('2d');
+            // this.initAnimations();
             this.tick();
-            resolve();
+            resolve(true);
         });
-      }
-
-    tick() {
+    }
+    Engine.initCanvasElement = initCanvasElement;
+    // export function initAnimations() {
+    //   const anim = new AnimEngine();
+    //   anim.newAnimState('idle', '../img/coin.png', 10);
+    // }
+    function tick() {
         requestAnimationFrame(() => {
             this.clearFrame();
             this.updateFrame();
             this.tick();
         });
     }
-    
-    clearFrame() {
+    Engine.tick = tick;
+    function clearFrame() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
-    
-    updateFrame() {
-      const keys = Object.keys(this.unitStack);
-      for(var i in keys){
-        const unit = this.unitStack[keys[i]];
-        if (unit) {
-          unit.tick();
-          this.drawFrame(unit);
+    Engine.clearFrame = clearFrame;
+    function updateFrame() {
+        const keys = Object.keys(this.unitStack);
+        for (var i in keys) {
+            const unit = this.unitStack[keys[i]];
+            if (unit) {
+                unit.tick();
+                this.drawFrame(unit);
+            }
         }
-      }
     }
-    
-    drawFrame(unit) {
-      if (unit.testGif) {
-        const buffer = gifler.Animator.createBufferCanvas(
-          unit.testGif._frames[unit.testGif._frameIndex],
-          unit.testGif.width,
-          unit.testGif.height
-        );
-        this.context.drawImage(buffer, unit.location.x, unit.location.y, 32, 32);
-      }
-
-      // this.context.beginPath();
-      // this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);
-      // if (unit.teamIndex === 1) {
-      //   this.context.fillStyle = '#3370d4'; // blue
-      // } else {
-      //   this.context.fillStyle = '#c82124'; // red
-      // }
-      // this.context.closePath();
-      // this.context.fill();
-      // this.context.stroke();
+    Engine.updateFrame = updateFrame;
+    function drawFrame(unit) {
+        if (unit.animEngine) {
+            const buffer = unit.animEngine.bufferCanvas;
+            this.context.drawImage(buffer, unit.location.x - unit.animEngine.animOffset.x, unit.location.y - unit.animEngine.animOffset.y);
+        }
+        // this.context.beginPath();
+        // this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);
+        // if (unit.teamIndex === 1) {
+        //   this.context.fillStyle = '#3370d4'; // blue
+        // } else {
+        //   this.context.fillStyle = '#c82124'; // red
+        // }
+        // this.context.closePath();
+        // this.context.fill();
+        // this.context.stroke();
     }
-
-    generateUUID() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      });
+    Engine.drawFrame = drawFrame;
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
     }
-}
+    Engine.generateUUID = generateUUID;
+})(Engine || (Engine = {}));
+//# sourceMappingURL=engine.js.map
