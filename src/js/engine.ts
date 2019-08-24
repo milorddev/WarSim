@@ -1,6 +1,5 @@
 import { Soldier } from './soldier.js';
 import { Base } from './base.js';
-import { gifFrames } from 'gif-frames';
 
 export namespace Engine {
 
@@ -32,23 +31,16 @@ export namespace Engine {
             this.canvas.width = document.body.clientWidth;
             this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.10);
             this.context = this.canvas.getContext('2d');
-            this.initAnimations();
+            // this.initAnimations();
             this.tick();
             resolve(true);
         });
       }
 
-    export function initAnimations() {
-      new Promise((resolve, reject) => {
-        const soldier = {
-          idle: gifFrames({url: '../img/poke.gif', frames: 'all', outputType: 'canvas'}).then(frameData => {
-            frameData.forEach((frame) => {
-              console.log(frame);
-            });
-          })
-        }
-      });
-    }
+    // export function initAnimations() {
+    //   const anim = new AnimEngine();
+    //   anim.newAnimState('idle', '../img/coin.png', 10);
+    // }
 
     export function tick() {
         requestAnimationFrame(() => {
@@ -74,25 +66,25 @@ export namespace Engine {
     }
     
     export function drawFrame(unit: Base) {
-      // if (unit.testGif) {
-      //   const buffer = gifler.Animator.createBufferCanvas(
-      //     unit.testGif._frames[unit.testGif._frameIndex],
-      //     unit.testGif.width,
-      //     unit.testGif.height
-      //   );
-      //   this.context.drawImage(buffer, unit.location.x, unit.location.y, 32, 32);
-      // }
-
-      this.context.beginPath();
-      this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);
-      if (unit.teamIndex === 1) {
-        this.context.fillStyle = '#3370d4'; // blue
-      } else {
-        this.context.fillStyle = '#c82124'; // red
+      if (unit.animEngine) {
+        const buffer = unit.animEngine.bufferCanvas;
+        this.context.drawImage(
+          buffer,
+          unit.location.x - unit.animEngine.animOffset.x,
+          unit.location.y - unit.animEngine.animOffset.y
+        );
       }
-      this.context.closePath();
-      this.context.fill();
-      this.context.stroke();
+
+      // this.context.beginPath();
+      // this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);
+      // if (unit.teamIndex === 1) {
+      //   this.context.fillStyle = '#3370d4'; // blue
+      // } else {
+      //   this.context.fillStyle = '#c82124'; // red
+      // }
+      // this.context.closePath();
+      // this.context.fill();
+      // this.context.stroke();
     }
 
     export function generateUUID() {

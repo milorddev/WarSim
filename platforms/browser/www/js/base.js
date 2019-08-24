@@ -1,7 +1,9 @@
 import { Engine } from "./engine.js";
+import { AnimEngine } from './animEngine.js';
 export class Base {
     constructor() {
         this.engine = Engine;
+        this.animEngine = new AnimEngine(this);
         this.health = 100;
         this.coins = 1;
         this.name = '';
@@ -18,6 +20,9 @@ export class Base {
     }
     init() {
         this.changeState();
+        this.animEngine.newAnimState('idle', '../img/coin.png', 10, 44, 40);
+        this.animEngine.changeSprite('idle');
+        this.animEngine.startAnimation();
         // gifler('../img/poke.gif').get().then(data => {
         //   this.testGif = data;
         //   setInterval(() => {
