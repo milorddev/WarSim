@@ -20,17 +20,26 @@ export class AnimEngine {
     constructor(unit: Base) {
         this.unit = unit;
         this.bufferCanvas = document.createElement('canvas');
-        this.bufferCanvas.width = 32;
-        this.bufferCanvas.height = 32;
+        console.log('size', this.unit.size)
+        this.bufferCanvas.width = this.unit.size;
+        this.bufferCanvas.height = this.unit.size;
         this.animOffset = {
-            x: Math.round(this.bufferCanvas.width / 2),
-            y: Math.round(this.bufferCanvas.height / 2)
+            x: Math.round(this.unit.size / 2),
+            y: Math.round(this.unit.size / 2)
         }
         this.bufferContext = this.bufferCanvas.getContext('2d');
     }
 
-    newAnimState(stateName: string, spritePath: string, spriteLength: number, frameWidth: number = 32, frameHeight: number = 32) {
+    newAnimState(stateName: string, spritePath: string, spriteLength: number,
+        frameWidth: number, frameHeight: number) {
         const image = new Image(); // this part could be made more efficient
+        if (!frameWidth) {
+            frameWidth = this.unit.size;
+        }
+        if (!frameHeight) {
+            frameHeight = this.unit.size;
+        }
+
         image.src = spritePath;
         const sprite = {
             width: frameWidth,
@@ -56,8 +65,8 @@ export class AnimEngine {
             this.currentSprite.height,
             0,
             0,
-            32,
-            32
+            this.unit.size,
+            this.unit.size
         );
         if (this.currentSprite.index >= this.currentSprite.length -1) {
             this.currentSprite.index = 0;

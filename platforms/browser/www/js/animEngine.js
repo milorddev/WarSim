@@ -5,16 +5,23 @@ export class AnimEngine {
         this.animSpeed = 60;
         this.unit = unit;
         this.bufferCanvas = document.createElement('canvas');
-        this.bufferCanvas.width = 32;
-        this.bufferCanvas.height = 32;
+        console.log('size', this.unit.size);
+        this.bufferCanvas.width = this.unit.size;
+        this.bufferCanvas.height = this.unit.size;
         this.animOffset = {
-            x: Math.round(this.bufferCanvas.width / 2),
-            y: Math.round(this.bufferCanvas.height / 2)
+            x: Math.round(this.unit.size / 2),
+            y: Math.round(this.unit.size / 2)
         };
         this.bufferContext = this.bufferCanvas.getContext('2d');
     }
-    newAnimState(stateName, spritePath, spriteLength, frameWidth = 32, frameHeight = 32) {
+    newAnimState(stateName, spritePath, spriteLength, frameWidth, frameHeight) {
         const image = new Image(); // this part could be made more efficient
+        if (!frameWidth) {
+            frameWidth = this.unit.size;
+        }
+        if (!frameHeight) {
+            frameHeight = this.unit.size;
+        }
         image.src = spritePath;
         const sprite = {
             width: frameWidth,
@@ -30,7 +37,7 @@ export class AnimEngine {
     }
     nextFrame() {
         this.bufferContext.clearRect(0, 0, this.bufferCanvas.width, this.bufferCanvas.height);
-        this.bufferContext.drawImage(this.currentSprite.image, this.currentSprite.width * this.currentSprite.index, 0, this.currentSprite.width, this.currentSprite.height, 0, 0, 32, 32);
+        this.bufferContext.drawImage(this.currentSprite.image, this.currentSprite.width * this.currentSprite.index, 0, this.currentSprite.width, this.currentSprite.height, 0, 0, this.unit.size, this.unit.size);
         if (this.currentSprite.index >= this.currentSprite.length - 1) {
             this.currentSprite.index = 0;
         }

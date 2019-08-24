@@ -31,16 +31,10 @@ export namespace Engine {
             this.canvas.width = document.body.clientWidth;
             this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.10);
             this.context = this.canvas.getContext('2d');
-            // this.initAnimations();
             this.tick();
             resolve(true);
         });
       }
-
-    // export function initAnimations() {
-    //   const anim = new AnimEngine();
-    //   anim.newAnimState('idle', '../img/coin.png', 10);
-    // }
 
     export function tick() {
         requestAnimationFrame(() => {

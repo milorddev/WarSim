@@ -6,6 +6,7 @@ export class Base {
   animEngine: AnimEngine;
   uuid:string;
   health: number;
+  size: number;
   coins: number;
   name: string;
   unitType: string;
@@ -22,15 +23,15 @@ export class Base {
 
     constructor() {
         this.engine = Engine;
-        this.animEngine = new AnimEngine(this);
         this.health = 100;
         this.coins = 1;
+        this.size = 32;
         this.name = '';
         this.unitType = '';
         this.location = {x: 0, y: 0};
         this.teamIndex = 0;
         this.state = 'IDLE';
-
+        
         this.movementSpeed = 30;
         this.attackTarget = null;
         this.attackRadius = 30;
@@ -41,6 +42,7 @@ export class Base {
 
     init() {
         this.changeState();
+        this.animEngine = new AnimEngine(this);
         this.animEngine.newAnimState('idle', '../img/coin.png', 10, 44, 40);
         this.animEngine.changeSprite('idle');
         this.animEngine.startAnimation();
