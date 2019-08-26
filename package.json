@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "cordova-browser": "^6.0.0",
+    "cordova-ios": "^5.0.1",
     "cordova-plugin-whitelist": "1"
   },
   "devDependencies": {
@@ -29,7 +30,8 @@
       "cordova-plugin-whitelist": {}
     },
     "platforms": [
-      "browser"
+      "browser",
+      "ios"
     ]
   }
 }
