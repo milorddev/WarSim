@@ -51,9 +51,6 @@ export class Player {
                 y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
             };
             newUnit.init();
-            const unitUUID = this.engine.generateUUID();
-            newUnit.uuid = unitUUID;
-            this.engine.unitStack[unitUUID] = newUnit;
             this.spawnUnit(unit);
         }, unit.interval);
     }

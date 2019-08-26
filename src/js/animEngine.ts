@@ -1,4 +1,3 @@
-import { Engine } from './engine.js';
 import { Base } from './base.js';
 
 export class AnimEngine {
@@ -20,7 +19,6 @@ export class AnimEngine {
     constructor(unit: Base) {
         this.unit = unit;
         this.bufferCanvas = document.createElement('canvas');
-        console.log('size', this.unit.size)
         this.bufferCanvas.width = this.unit.size;
         this.bufferCanvas.height = this.unit.size;
         this.animOffset = {

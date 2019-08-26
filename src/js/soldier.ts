@@ -1,7 +1,7 @@
-import { Base } from './base.js';
+import { BaseUnit } from './baseUnit.js';
 import { Engine } from './engine.js';
 
-export class Soldier extends Base {
+export class Soldier extends BaseUnit {
     constructor() {
         super();
         this.engine = Engine;

@@ -1,5 +1,5 @@
 import { Soldier } from './soldier.js';
-import { Base } from './base.js';
+import { BaseUnit } from './baseUnit.js';
 
 export namespace Engine {
 
@@ -10,7 +10,7 @@ export namespace Engine {
     soldier: {
       enabled: boolean,
       interval: number,
-      instance: Base
+      instance: BaseUnit
     }
   };
     export function initEngine() {
@@ -59,7 +59,7 @@ export namespace Engine {
       }
     }
     
-    export function drawFrame(unit: Base) {
+    export function drawFrame(unit: BaseUnit) {
       if (unit.animEngine) {
         const buffer = unit.animEngine.bufferCanvas;
         this.context.drawImage(

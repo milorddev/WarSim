@@ -5,7 +5,6 @@ export class AnimEngine {
         this.animSpeed = 60;
         this.unit = unit;
         this.bufferCanvas = document.createElement('canvas');
-        console.log('size', this.unit.size);
         this.bufferCanvas.width = this.unit.size;
         this.bufferCanvas.height = this.unit.size;
         this.animOffset = {
