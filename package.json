@@ -8,7 +8,7 @@
     "start": "npm run build && concurrently \"npm run typewatch\" \"phonegap serve\"",
     "typewatch": "./node_modules/.bin/tsc --build tsconfig.json --watch ",
     "build": "./node_modules/.bin/tsc --build tsconfig.json && npm run copy",
-    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./www/\""
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html,png}\" \"./www/\""
   },
   "keywords": [
     "ecosystem:cordova"

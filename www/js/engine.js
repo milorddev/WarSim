@@ -78,5 +78,24 @@ export var Engine;
         });
     }
     Engine.generateUUID = generateUUID;
+    function lookAtTarget(source, target) {
+        const yDiff = target.y - source.y;
+        const xDiff = target.x - source.x;
+        let angle = Math.atan2(yDiff, xDiff);
+        angle = angle * (180 / Math.PI);
+        if (angle < 0) {
+            angle = 360 - (-angle);
+        }
+        return angle;
+    }
+    Engine.lookAtTarget = lookAtTarget;
+    function incrementTowards(degree) {
+        const radians = degree * (Math.PI / 180);
+        return {
+            x: Math.round(Math.cos(radians)),
+            y: Math.round(Math.sin(radians))
+        };
+    }
+    Engine.incrementTowards = incrementTowards;
 })(Engine || (Engine = {}));
 //# sourceMappingURL=engine.js.map

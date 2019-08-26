@@ -95,4 +95,26 @@ export namespace Engine {
         return v.toString(16);
       });
     }
+
+    export function lookAtTarget(source: {x: number, y: number}, target: {x: number, y: number}) {
+      const yDiff = target.y - source.y;
+      const xDiff = target.x - source.x;
+      let angle = Math.atan2(yDiff, xDiff);
+      angle = angle * (180 / Math.PI);
+      if(angle < 0)
+      {
+          angle = 360 - (-angle);
+      }
+      return angle;
+    }
+
+    export function incrementTowards(degree: number) {
+      const radians = degree * (Math.PI / 180);
+      return {
+        x: Math.round(Math.cos(radians)),
+        y: Math.round(Math.sin(radians))
+      };
+    }
 }
+
+

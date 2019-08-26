@@ -1,4 +1,5 @@
 import { Base } from './base.js';
+import { Projectile } from './projectile.js';
 export class BaseUnit extends Base {
     constructor() {
         super();
@@ -130,6 +131,9 @@ export class BaseUnit extends Base {
                 }
                 else if (this.unitType === 'ranged') {
                     console.log('ranged');
+                    const arrow = new Projectile(this);
+                    arrow.aimAtTarget(this.attackTarget);
+                    arrow.fire();
                 }
             }
             if (this.attackTarget.health <= 0) {
@@ -151,7 +155,12 @@ export class BaseUnit extends Base {
                 const instigator = unit;
                 if (instigator && instigator.health > 0) {
                     this.attackTarget = instigator;
-                    this.state = 'CHARGE';
+                    if (this.unitType == 'melee') {
+                        this.state = 'CHARGE';
+                    }
+                    else if (this.unitType == 'ranged') {
+                        this.state = 'FIGHT';
+                    }
                     this.changeState();
                 }
             }

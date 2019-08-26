@@ -10,17 +10,19 @@ export class AnimEngine {
         width: number,
         height: number,
         length: number,
+        type: string,
         index: number,
         image: HTMLImageElement
     }
     isPlaying: boolean = false;
     animSpeed: number = 60;
+    spriteRotation: number = 0;
 
     constructor(unit: Base) {
         this.unit = unit;
         this.bufferCanvas = document.createElement('canvas');
-        this.bufferCanvas.width = this.unit.size;
-        this.bufferCanvas.height = this.unit.size;
+        this.bufferCanvas.width = this.unit.size*2;
+        this.bufferCanvas.height = this.unit.size*2;
         this.animOffset = {
             x: Math.round(this.unit.size / 2),
             y: Math.round(this.unit.size / 2)
@@ -38,11 +40,13 @@ export class AnimEngine {
             frameHeight = this.unit.size;
         }
 
+        const spriteType = (spriteLength == 1) ? 'static' : 'animated';
         image.src = spritePath;
         const sprite = {
             width: frameWidth,
             height: frameHeight,
             length: spriteLength,
+            type: spriteType,
             index: 0,
             image: image
         };
@@ -53,23 +57,34 @@ export class AnimEngine {
         this.currentSprite = this.animations[stateName];
     }
 
+    rotateImage() {
+        this.bufferContext.translate(this.unit.size, this.unit.size);
+        this.bufferContext.rotate(this.spriteRotation * Math.PI / 180);
+    }
+
     nextFrame() {
         this.bufferContext.clearRect(0, 0, this.bufferCanvas.width, this.bufferCanvas.height);
+        this.bufferContext.save();
+        this.rotateImage();
         this.bufferContext.drawImage(
             this.currentSprite.image,
             this.currentSprite.width * this.currentSprite.index,
             0,
             this.currentSprite.width,
             this.currentSprite.height,
-            0,
-            0,
+
+            -this.unit.size/2,
+            -this.unit.size/2,
             this.unit.size,
             this.unit.size
         );
-        if (this.currentSprite.index >= this.currentSprite.length -1) {
-            this.currentSprite.index = 0;
-        } else {
-            this.currentSprite.index += 1;
+        this.bufferContext.restore();
+        if (this.currentSprite.type == 'animated') {
+            if (this.currentSprite.index >= this.currentSprite.length -1) {
+                this.currentSprite.index = 0;
+            } else {
+                this.currentSprite.index += 1;
+            }
         }
     }
 
@@ -79,7 +94,7 @@ export class AnimEngine {
 
     }
 
-    animationLoop() {
+    animationLoop() { // this could run forever, make sure its cleaned up
         if (this.isPlaying === true) {
             setTimeout(() => {
                 this.nextFrame();

@@ -14,5 +14,6 @@ export class Base {
         this.uuid = unitUUID;
         this.engine.unitStack[unitUUID] = this;
     }
+    tick() { }
 }
 //# sourceMappingURL=base.js.map
