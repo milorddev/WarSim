@@ -4,7 +4,9 @@ export var Engine;
     Engine.unitStack = {};
     Engine.refImages = {
         coin: new Image(),
-        arrow: new Image()
+        arrow: new Image(),
+        walkDown: new Image(),
+        walkUp: new Image()
     };
     function initEngine() {
         console.log('engine service started');
@@ -21,6 +23,8 @@ export var Engine;
     function initRefImages() {
         this.refImages.coin.src = '../img/coin.png';
         this.refImages.arrow.src = '../img/arrow.png';
+        this.refImages.walkDown.src = '../img/zelda_walk_enemy.png';
+        this.refImages.walkUp.src = '../img/zelda_walk_friend.png';
     }
     Engine.initRefImages = initRefImages;
     function initCanvasElement(canvasElement) {

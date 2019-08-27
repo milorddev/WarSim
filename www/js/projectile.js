@@ -3,7 +3,6 @@ export class Projectile extends Base {
     constructor(parent) {
         super();
         this.speed = 10;
-        this.angle = 0;
         this.attackDamage = 20;
         this.teamIndex = parent.teamIndex;
         this.location = Object.assign({}, parent.location);

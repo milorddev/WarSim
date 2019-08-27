@@ -6,6 +6,7 @@ export class Base {
         this.size = 16;
         this.location = { x: 0, y: 0 };
         this.teamIndex = 0;
+        this.angle = 0;
         this.animEngine = new AnimEngine(this);
         this.addToStack();
     }

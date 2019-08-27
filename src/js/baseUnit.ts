@@ -107,43 +107,33 @@ export class BaseUnit extends Base {
 
     moveForward() {
         if (this.teamIndex === 1) {
-          this.location.y -= 1;
+          this.angle = 270;
         } else {
-          this.location.y += 1;
+          this.angle = 90;
         }
+        this.move();
+    }
+
+    move() {
+      const increment = this.engine.incrementTowards(this.angle);
+      this.location.x += increment.x;
+      this.location.y += increment.y;
     }
 
     moveTowardEnemyUnit() {
-        if (this.attackTarget) {
-          const atEnemy = {x: false, y: false};
-          if (this.location.x > this.attackTarget.location.x + 6 || this.location.x < this.attackTarget.location.x - 6) {
-            if (this.attackTarget.location.x > this.location.x) {
-              this.location.x += 1;
-            } else if (this.attackTarget.location.x < this.location.x) {
-              this.location.x -= 1;
-            }
-          } else {
-            atEnemy.x = true;
-          }
-    
-          if (this.location.y > this.attackTarget.location.y + 6 || this.location.y < this.attackTarget.location.y - 6) {
-            if (this.attackTarget.location.y > this.location.y) {
-              this.location.y += 1;
-            } else if (this.attackTarget.location.y < this.location.y) {
-              this.location.y -= 1;
-            }
-          } else {
-            atEnemy.y = true;
-          }
-    
-          if (atEnemy.x === true && atEnemy.y === true) {
+      if (this.attackTarget) {
+        this.angle = this.engine.lookAtTarget(this.location, this.attackTarget.location);
+        this.move();
+        if (Math.abs(this.attackTarget.location.x - this.location.x) <= this.size * 0.618) {
+          if (Math.abs(this.attackTarget.location.y - this.location.y) <= this.size * 0.618) {
             this.state = 'FIGHT';
             this.changeState();
           }
-        } else {
-          this.state = 'IDLE';
-          this.changeState();
         }
+      } else {
+        this.state = 'IDLE';
+        this.changeState();
+      }
     }
     
     attackEnemyUnit() {
