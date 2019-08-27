@@ -52,11 +52,12 @@ export class Player {
     beginMatch() {
         console.log('beginning match');
         this.spawnUnit(this.engine.spawnable.soldier);
+        this.spawnUnit(this.engine.spawnable.ranger);
     }
 
     spawnUnit(unit) {
         setTimeout(() => {
-          const newUnit = new unit.instance();
+          const newUnit = new unit.instance(this);
           newUnit.teamIndex = this.teamIndex;
           newUnit.location = {
             x: this.spawnArea.x + (Math.random() * this.spawnArea.width),

@@ -3,7 +3,7 @@ import { Player } from './player.js';
 class App {
     constructor() {
         this.numberOfPlayers = 2;
-        this.playerList = [];
+        this.playerList = []; //may not be needed
         document.addEventListener('deviceready', this.onDeviceReady.bind(this));
     }
     onDeviceReady() {
@@ -19,6 +19,7 @@ class App {
             player.isPlayer = true;
             player.teamIndex = 1;
             this.playerList.push(player);
+            this.engine.player = player;
             const enemy = new Player();
             enemy.teamIndex = 2;
             enemy.isPlayer = false;

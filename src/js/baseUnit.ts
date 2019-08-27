@@ -1,9 +1,10 @@
 
 import { Base } from './base.js';
 import { Projectile } from './projectile.js';
+import { Player } from './player.js';
 
 export class BaseUnit extends Base {
-  
+  parent: Player;
   health: number;
   coins: number;
   name: string;
@@ -16,11 +17,10 @@ export class BaseUnit extends Base {
   attackRadius: number;
   attackSpeed: number;
 
-    constructor() {
+    constructor(parent: Player) {
         super();
-        
+        this.parent = parent;
         this.health = 100;
-        this.coins = 1;
         this.name = '';
         this.unitType = '';
         this.state = 'IDLE';
@@ -36,9 +36,9 @@ export class BaseUnit extends Base {
     init() {
         this.changeState();
         this.animEngine.newAnimState('walkUp', this.engine.refImages.walkUp, 8, 30, 30);
-        this.animEngine.newAnimState('walkDown', this.engine.refImages.walkDown, 8, 30, 32)
-        this.animEngine.newAnimState('attackUp', this.engine.refImages.attackUp, 5, 30, 32)
-        this.animEngine.newAnimState('attackDown', this.engine.refImages.attackDown, 5, 28, 32)
+        this.animEngine.newAnimState('walkDown', this.engine.refImages.walkDown, 8, 30, 32);
+        this.animEngine.newAnimState('attackUp', this.engine.refImages.attackUp, 5, 30, 32);
+        this.animEngine.newAnimState('attackDown', this.engine.refImages.attackDown, 5, 28, 32);
         this.checkAnimationState();
         this.animEngine.startAnimation();
     }
@@ -47,12 +47,14 @@ export class BaseUnit extends Base {
       if (this.angle < 180 && this.angle > 0) {
         if(this.state == 'IDLE') {
           this.animEngine.changeSprite('walkDown');
+          this.animEngine.startAnimation();
         } else if(this.state == 'FIGHT') {
           this.animEngine.changeSprite('attackDown');
         }
       } else if (this.angle > 180 && this.angle < 360) {
         if(this.state == 'IDLE') {
           this.animEngine.changeSprite('walkUp');
+          this.animEngine.startAnimation();
         } else if(this.state == 'FIGHT') {
           this.animEngine.changeSprite('attackUp');
         }
@@ -161,6 +163,7 @@ export class BaseUnit extends Base {
           if (this.attackTarget.health > 0) {
             if (this.unitType === 'melee') {
               this.checkAnimationState();
+              this.animEngine.startAnimation();
               this.attackTarget.health = Math.round(this.attackTarget.health - this.attackDamage);
             } else if (this.unitType === 'ranged') {
               const arrow = new Projectile(this);
@@ -169,6 +172,7 @@ export class BaseUnit extends Base {
             }
           }
           if (this.attackTarget.health <= 0) {
+            this.parent.coins += 1;
             this.state = 'IDLE';
             this.changeState();
           }

@@ -5,7 +5,7 @@ class App {
 
   engine: any;
   numberOfPlayers: number = 2;
-  playerList: Array<Player> = []
+  playerList: Array<Player> = [] //may not be needed
 
     constructor() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this));
@@ -25,6 +25,7 @@ class App {
           player.isPlayer = true;
           player.teamIndex = 1;
           this.playerList.push(player);
+          this.engine.player = player;
     
           const enemy = new Player();
           enemy.teamIndex = 2;

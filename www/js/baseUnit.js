@@ -1,10 +1,10 @@
 import { Base } from './base.js';
 import { Projectile } from './projectile.js';
 export class BaseUnit extends Base {
-    constructor() {
+    constructor(parent) {
         super();
+        this.parent = parent;
         this.health = 100;
-        this.coins = 1;
         this.name = '';
         this.unitType = '';
         this.state = 'IDLE';
@@ -28,6 +28,7 @@ export class BaseUnit extends Base {
         if (this.angle < 180 && this.angle > 0) {
             if (this.state == 'IDLE') {
                 this.animEngine.changeSprite('walkDown');
+                this.animEngine.startAnimation();
             }
             else if (this.state == 'FIGHT') {
                 this.animEngine.changeSprite('attackDown');
@@ -36,6 +37,7 @@ export class BaseUnit extends Base {
         else if (this.angle > 180 && this.angle < 360) {
             if (this.state == 'IDLE') {
                 this.animEngine.changeSprite('walkUp');
+                this.animEngine.startAnimation();
             }
             else if (this.state == 'FIGHT') {
                 this.animEngine.changeSprite('attackUp');
@@ -137,6 +139,7 @@ export class BaseUnit extends Base {
             if (this.attackTarget.health > 0) {
                 if (this.unitType === 'melee') {
                     this.checkAnimationState();
+                    this.animEngine.startAnimation();
                     this.attackTarget.health = Math.round(this.attackTarget.health - this.attackDamage);
                 }
                 else if (this.unitType === 'ranged') {
@@ -146,6 +149,7 @@ export class BaseUnit extends Base {
                 }
             }
             if (this.attackTarget.health <= 0) {
+                this.parent.coins += 1;
                 this.state = 'IDLE';
                 this.changeState();
             }

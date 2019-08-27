@@ -12,7 +12,8 @@ export class AnimEngine {
         length: number,
         type: string,
         index: number,
-        image: HTMLImageElement
+        image: HTMLImageElement,
+        isLooping: boolean
     }
     isPlaying: boolean = false;
     animSpeed: number = 60;
@@ -31,7 +32,7 @@ export class AnimEngine {
     }
 
     newAnimState(stateName: string, refImage: HTMLImageElement, spriteLength: number,
-        frameWidth: number, frameHeight: number) {
+        frameWidth: number, frameHeight: number, isLooping: boolean = true) {
         if (!frameWidth) {
             frameWidth = this.unit.size;
         }
@@ -46,7 +47,8 @@ export class AnimEngine {
             length: spriteLength,
             type: spriteType,
             index: 0,
-            image: refImage
+            image: refImage,
+            isLooping: isLooping
         };
         this.animations[stateName] = sprite;
     }
@@ -64,6 +66,21 @@ export class AnimEngine {
         this.bufferContext.clearRect(0, 0, this.bufferCanvas.width, this.bufferCanvas.height);
         this.bufferContext.save();
         this.rotateImage();
+        this.drawFrame();
+        this.bufferContext.restore();
+        if (this.currentSprite.type == 'animated') {
+            if (this.currentSprite.index >= this.currentSprite.length -1) {
+                this.currentSprite.index = 0;
+                if (!this.currentSprite.isLooping) {
+                    this.stopAnimation();
+                }
+            } else {
+                this.currentSprite.index += 1;
+            }
+        }
+    }
+
+    drawFrame() {
         this.bufferContext.drawImage(
             this.currentSprite.image,
             this.currentSprite.width * this.currentSprite.index,
@@ -76,20 +93,13 @@ export class AnimEngine {
             this.unit.size,
             this.unit.size
         );
-        this.bufferContext.restore();
-        if (this.currentSprite.type == 'animated') {
-            if (this.currentSprite.index >= this.currentSprite.length -1) {
-                this.currentSprite.index = 0;
-            } else {
-                this.currentSprite.index += 1;
-            }
-        }
     }
 
     startAnimation() {
-        this.isPlaying = true;
-        this.animationLoop();
-
+        if (!this.isPlaying) {
+            this.isPlaying = true;
+            this.animationLoop();
+        }
     }
 
     animationLoop() { // this could run forever, make sure its cleaned up

@@ -14,7 +14,7 @@ export class AnimEngine {
         };
         this.bufferContext = this.bufferCanvas.getContext('2d');
     }
-    newAnimState(stateName, refImage, spriteLength, frameWidth, frameHeight) {
+    newAnimState(stateName, refImage, spriteLength, frameWidth, frameHeight, isLooping = true) {
         if (!frameWidth) {
             frameWidth = this.unit.size;
         }
@@ -28,7 +28,8 @@ export class AnimEngine {
             length: spriteLength,
             type: spriteType,
             index: 0,
-            image: refImage
+            image: refImage,
+            isLooping: isLooping
         };
         this.animations[stateName] = sprite;
     }
@@ -43,20 +44,28 @@ export class AnimEngine {
         this.bufferContext.clearRect(0, 0, this.bufferCanvas.width, this.bufferCanvas.height);
         this.bufferContext.save();
         this.rotateImage();
-        this.bufferContext.drawImage(this.currentSprite.image, this.currentSprite.width * this.currentSprite.index, 0, this.currentSprite.width, this.currentSprite.height, -this.unit.size / 2, -this.unit.size / 2, this.unit.size, this.unit.size);
+        this.drawFrame();
         this.bufferContext.restore();
         if (this.currentSprite.type == 'animated') {
             if (this.currentSprite.index >= this.currentSprite.length - 1) {
                 this.currentSprite.index = 0;
+                if (!this.currentSprite.isLooping) {
+                    this.stopAnimation();
+                }
             }
             else {
                 this.currentSprite.index += 1;
             }
         }
     }
+    drawFrame() {
+        this.bufferContext.drawImage(this.currentSprite.image, this.currentSprite.width * this.currentSprite.index, 0, this.currentSprite.width, this.currentSprite.height, -this.unit.size / 2, -this.unit.size / 2, this.unit.size, this.unit.size);
+    }
     startAnimation() {
-        this.isPlaying = true;
-        this.animationLoop();
+        if (!this.isPlaying) {
+            this.isPlaying = true;
+            this.animationLoop();
+        }
     }
     animationLoop() {
         if (this.isPlaying === true) {

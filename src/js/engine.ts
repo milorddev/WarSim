@@ -1,12 +1,15 @@
 import { Soldier } from './soldier.js';
 import { BaseUnit } from './baseUnit.js';
 import { Base } from './base.js';
+import { Ranger } from './ranger.js';
+import { Player } from './player.js';
 
 export namespace Engine {
 
   export let canvas: HTMLCanvasElement;
   export let context: CanvasRenderingContext2D;
   export const unitStack: object = {};
+  export let player: Player;
   export let spawnable: {
     soldier: {
       enabled: boolean,
@@ -22,6 +25,11 @@ export namespace Engine {
             enabled: true,
             interval: 1000,
             instance: Soldier
+          },
+          ranger: {
+            enabled: true,
+            interval: 1500,
+            instance: Ranger
           }
         };
         this.initRefImages();
@@ -77,32 +85,23 @@ export namespace Engine {
     
     export function drawFrame(unit: Base) {
       if (unit.animEngine) {
+        
         const buffer = unit.animEngine.bufferCanvas;
+  
+        if (unit.teamIndex !== 1) {
+          unit.animEngine.bufferContext.filter = 'hue-rotate(180deg)';
+        }
+
         this.context.drawImage(
           buffer,
           unit.location.x - unit.animEngine.animOffset.x,
           unit.location.y - unit.animEngine.animOffset.y
         );
 
-        if (unit.teamIndex === 1) {
-          
-          // this.context.fillStyle = '#3370d4'; // blue
-        } else {
-          
-          // this.context.fillStyle = '#c82124'; // red
-        }
-      }
+        
 
-      // this.context.beginPath();
-      // this.context.arc(unit.location.x, unit.location.y, 5, 0, 360);
-      // if (unit.teamIndex === 1) {
-      //   this.context.fillStyle = '#3370d4'; // blue
-      // } else {
-      //   this.context.fillStyle = '#c82124'; // red
-      // }
-      // this.context.closePath();
-      // this.context.fill();
-      // this.context.stroke();
+        
+      }
     }
 
     export function generateUUID() {
