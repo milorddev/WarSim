@@ -35,8 +35,8 @@ export namespace Engine {
     export function initRefImages() {
       this.refImages.coin.src = '../img/coin.png';
       this.refImages.arrow.src = '../img/arrow.png';
-      this.refImages.walkDown.src = '../img/zelda_walk_enemy.png';
-      this.refImages.walkUp.src = '../img/zelda_walk_friend.png';
+      this.refImages.walkDown.src = '../img/zelda_walk_down.png';
+      this.refImages.walkUp.src = '../img/zelda_walk_up.png';
     }
 
     export function initCanvasElement(canvasElement: HTMLCanvasElement) {

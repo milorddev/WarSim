@@ -17,14 +17,24 @@ export class BaseUnit extends Base {
     }
     init() {
         this.changeState();
-        this.animEngine.newAnimState('idle', this.engine.refImages.coin, 10, 44, 40);
-        this.animEngine.changeSprite('idle');
+        this.animEngine.newAnimState('walkUp', this.engine.refImages.walkUp, 8, 30, 30);
+        this.animEngine.newAnimState('walkDown', this.engine.refImages.walkDown, 8, 30, 30);
+        this.checkAnimationState();
         this.animEngine.startAnimation();
+    }
+    checkAnimationState() {
+        if (this.angle < 180 && this.angle > 0) {
+            this.animEngine.changeSprite('walkDown');
+        }
+        else if (this.angle > 180 && this.angle < 360) {
+            this.animEngine.changeSprite('walkUp');
+        }
     }
     tick() {
         if (this.health <= 0) {
             this.destroy();
         }
+        this.checkAnimationState();
         super.tick();
     }
     destroy() {
