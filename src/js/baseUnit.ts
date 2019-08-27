@@ -15,7 +15,6 @@ export class BaseUnit extends Base {
   attackTarget: BaseUnit;
   attackRadius: number;
   attackSpeed: number;
-  attackDamage: number;
 
     constructor() {
         super();
@@ -29,25 +28,29 @@ export class BaseUnit extends Base {
         this.movementSpeed = 30;
         this.attackTarget = null;
         this.attackRadius = 30;
-        this.attackSpeed = 120;
+        this.attackSpeed = 1000;
         this.attackDamage = 20;
         this.stateTimer = {idle: false, charge: false, fight: false};
     }
 
     init() {
         this.changeState();
-        this.animEngine.newAnimState('idle', '../img/coin.png', 10, 44, 40);
+        this.animEngine.newAnimState('idle', this.engine.refImages.coin, 10, 44, 40);
         this.animEngine.changeSprite('idle');
         this.animEngine.startAnimation();
     }
 
-    tick() {
+    protected tick() {
       if (this.health <= 0) {
-        delete this.engine.unitStack[this.uuid];
+        this.destroy();
+      }
+      super.tick();
+    }
+
+    protected destroy() {
         this.attackTarget = null;
         this.state = 'NONE';
-      }
-
+        super.destroy();
     }
 
     idle() {
@@ -108,11 +111,6 @@ export class BaseUnit extends Base {
         } else {
           this.location.y += 1;
         }
-    
-        // if out of bounds, remove unit
-        if (this.location.y > this.engine.canvas.height || this.location.y < 0) {
-          this.health = 0;
-        }
     }
 
     moveTowardEnemyUnit() {
@@ -154,7 +152,6 @@ export class BaseUnit extends Base {
             if (this.unitType === 'melee') {
               this.attackTarget.health = Math.round(this.attackTarget.health - this.attackDamage);
             } else if (this.unitType === 'ranged') {
-              console.log('ranged');
               const arrow = new Projectile(this);
               arrow.aimAtTarget(this.attackTarget);
               arrow.fire();
@@ -171,22 +168,15 @@ export class BaseUnit extends Base {
     }
     
     detectEnemy() {
-      for (let key in this.engine.unitStack) {
-        const unit: BaseUnit = this.engine.unitStack[key];
-        const xCalc = Math.pow(unit.location.x - this.location.x, 2);
-        const yCalc = Math.pow(unit.location.y - this.location.y, 2);
-        if (xCalc + yCalc  < Math.pow(this.attackRadius * 2, 2) && unit.teamIndex !== this.teamIndex) {
-          const instigator = unit;
-          if (instigator && instigator.health > 0) {
-            this.attackTarget = instigator;
-            if (this.unitType == 'melee') {
-              this.state = 'CHARGE';
-            } else if (this.unitType == 'ranged') {
-              this.state = 'FIGHT';
-            }
-            this.changeState();
-          }
+      const instigator = this.engine.checkCollision(this, this.attackRadius);
+      if (instigator && instigator.health > 0) {
+        this.attackTarget = instigator;
+        if (this.unitType == 'melee') {
+          this.state = 'CHARGE';
+        } else if (this.unitType == 'ranged') {
+          this.state = 'FIGHT';
         }
+        this.changeState();
       }
     }
 }

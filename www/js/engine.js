@@ -2,6 +2,10 @@ import { Soldier } from './soldier.js';
 export var Engine;
 (function (Engine) {
     Engine.unitStack = {};
+    Engine.refImages = {
+        coin: new Image(),
+        arrow: new Image()
+    };
     function initEngine() {
         console.log('engine service started');
         this.spawnable = {
@@ -11,8 +15,14 @@ export var Engine;
                 instance: Soldier
             }
         };
+        this.initRefImages();
     }
     Engine.initEngine = initEngine;
+    function initRefImages() {
+        this.refImages.coin.src = '../img/coin.png';
+        this.refImages.arrow.src = '../img/arrow.png';
+    }
+    Engine.initRefImages = initRefImages;
     function initCanvasElement(canvasElement) {
         return new Promise((resolve, reject) => {
             this.initEngine();
@@ -92,10 +102,22 @@ export var Engine;
     function incrementTowards(degree) {
         const radians = degree * (Math.PI / 180);
         return {
-            x: Math.round(Math.cos(radians)),
-            y: Math.round(Math.sin(radians))
+            x: Math.cos(radians),
+            y: Math.sin(radians)
         };
     }
     Engine.incrementTowards = incrementTowards;
+    function checkCollision(self, radius) {
+        for (let key in this.unitStack) {
+            const unit = this.unitStack[key];
+            const xCalc = Math.pow(unit.location.x - self.location.x, 2);
+            const yCalc = Math.pow(unit.location.y - self.location.y, 2);
+            if (xCalc + yCalc < Math.pow(radius * 2, 2) && unit.teamIndex !== self.teamIndex) {
+                return unit;
+            }
+        }
+        return undefined;
+    }
+    Engine.checkCollision = checkCollision;
 })(Engine || (Engine = {}));
 //# sourceMappingURL=engine.js.map

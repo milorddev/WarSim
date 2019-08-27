@@ -1,5 +1,6 @@
 import { Soldier } from './soldier.js';
 import { BaseUnit } from './baseUnit.js';
+import { Base } from './base.js';
 
 export namespace Engine {
 
@@ -13,6 +14,12 @@ export namespace Engine {
       instance: BaseUnit
     }
   };
+  export let refImages: object = {
+    coin: new Image(),
+    arrow: new Image(),
+    walkDown: new Image(),
+    walkUp: new Image()
+  };
     export function initEngine() {
         console.log('engine service started');
         this.spawnable = {
@@ -22,6 +29,14 @@ export namespace Engine {
             instance: Soldier
           }
         };
+        this.initRefImages();
+    }
+
+    export function initRefImages() {
+      this.refImages.coin.src = '../img/coin.png';
+      this.refImages.arrow.src = '../img/arrow.png';
+      this.refImages.walkDown.src = '../img/zelda_walk_enemy.png';
+      this.refImages.walkUp.src = '../img/zelda_walk_friend.png';
     }
 
     export function initCanvasElement(canvasElement: HTMLCanvasElement) {
@@ -59,7 +74,7 @@ export namespace Engine {
       }
     }
     
-    export function drawFrame(unit: BaseUnit) {
+    export function drawFrame(unit: Base) {
       if (unit.animEngine) {
         const buffer = unit.animEngine.bufferCanvas;
         this.context.drawImage(
@@ -111,9 +126,21 @@ export namespace Engine {
     export function incrementTowards(degree: number) {
       const radians = degree * (Math.PI / 180);
       return {
-        x: Math.round(Math.cos(radians)),
-        y: Math.round(Math.sin(radians))
+        x: Math.cos(radians),
+        y: Math.sin(radians)
       };
+    }
+
+    export function checkCollision(self: Base, radius: number) {
+      for (let key in this.unitStack) {
+        const unit: Base = this.unitStack[key];
+        const xCalc = Math.pow(unit.location.x - self.location.x, 2);
+        const yCalc = Math.pow(unit.location.y - self.location.y, 2);
+        if (xCalc + yCalc  < Math.pow(radius * 2, 2) && unit.teamIndex !== self.teamIndex) {
+          return unit;
+        }
+      }
+      return undefined;
     }
 }
 

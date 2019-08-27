@@ -9,12 +9,15 @@ export class Base {
     size: number;
     teamIndex: number;
     location: {x: number, y: number};
+    attackDamage: number;
+    angle: number;
     
     constructor() {
         this.engine = Engine;
         this.size = 16;
         this.location = {x: 0, y: 0};
         this.teamIndex = 0;
+        this.angle = 0;
         this.animEngine = new AnimEngine(this);
         this.addToStack();
     }
@@ -25,5 +28,14 @@ export class Base {
         this.engine.unitStack[unitUUID] = this;
     }
 
-    tick() {}
+    protected tick() { 
+        // if out of bounds, remove unit
+        if (this.location.y > this.engine.canvas.height || this.location.y < 0) {
+            this.destroy();
+        }
+    }
+
+    protected destroy() {
+        delete this.engine.unitStack[this.uuid];
+    }
 }

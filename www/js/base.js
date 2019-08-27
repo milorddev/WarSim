@@ -14,6 +14,14 @@ export class Base {
         this.uuid = unitUUID;
         this.engine.unitStack[unitUUID] = this;
     }
-    tick() { }
+    tick() {
+        // if out of bounds, remove unit
+        if (this.location.y > this.engine.canvas.height || this.location.y < 0) {
+            this.destroy();
+        }
+    }
+    destroy() {
+        delete this.engine.unitStack[this.uuid];
+    }
 }
 //# sourceMappingURL=base.js.map

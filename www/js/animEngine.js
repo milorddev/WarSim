@@ -14,8 +14,7 @@ export class AnimEngine {
         };
         this.bufferContext = this.bufferCanvas.getContext('2d');
     }
-    newAnimState(stateName, spritePath, spriteLength, frameWidth, frameHeight) {
-        const image = new Image(); // this part could be made more efficient
+    newAnimState(stateName, refImage, spriteLength, frameWidth, frameHeight) {
         if (!frameWidth) {
             frameWidth = this.unit.size;
         }
@@ -23,14 +22,13 @@ export class AnimEngine {
             frameHeight = this.unit.size;
         }
         const spriteType = (spriteLength == 1) ? 'static' : 'animated';
-        image.src = spritePath;
         const sprite = {
             width: frameWidth,
             height: frameHeight,
             length: spriteLength,
             type: spriteType,
             index: 0,
-            image: image
+            image: refImage
         };
         this.animations[stateName] = sprite;
     }
