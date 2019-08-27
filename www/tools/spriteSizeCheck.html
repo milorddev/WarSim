@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sprite Size Check</title>
+</head>
+<body>
+    <form>
+        <input id="imageUploadBtn" type="file">
+    </form>
+    
+<div>
+    <div style="margin: 10px">
+        <img style="position: absolute" id="viewbox" src="" alt="">
+        <div id="overlay"></div>
+    </div>
+    
+    <form>
+        <label for="height"> Height: 
+            <input type="number" id="height">
+        </label>
+        <label for="width"> Width: 
+            <input type="number" id="width">
+        </label>
+        <label for="count"> Count: 
+            <input type="number" id="count">
+        </label>
+    </form>
+</div>
+
+<script>
+    var viewbox = document.getElementById('viewbox');
+    var imageUploadBtn = document.getElementById('imageUploadBtn');
+    var spriteHeight = document.getElementById('height');
+    var spriteWidth = document.getElementById('width');
+    var spriteCount = document.getElementById('count');
+    var overlay = document.getElementById('overlay');
+
+    spriteCount.value = 1;
+    spriteHeight.value = 32;
+    spriteWidth.value = 32;
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+
+    imageUploadBtn.addEventListener('change',(e) => {
+        viewbox.setAttribute('src', '');
+        toBase64(e.target.files[0]).then(imagefile => {
+            console.log(imagefile);
+            viewbox.setAttribute('src', imagefile);
+        });
+    });
+
+    document.addEventListener('change', changeBox);
+
+    function changeBox() {
+        console.log('changing');
+        overlay.innerHTML = "";
+        for(var i = 0; i < parseInt(spriteCount.value); i++) {
+            const box = document.createElement('div');
+            box.innerHTML = '+';
+            box.style.border = '1px solid black';
+            if (i > 0) {
+                box.style.borderLeft = '0px';
+            }
+            box.style.height = spriteHeight.value.toString() + 'px';
+            box.style.width = spriteWidth.value.toString() + 'px';
+            box.style.display = 'inline-block';
+            box.style.lineHeight = spriteHeight.value.toString() + 'px';
+            box.style.textAlign = 'center';
+            box.style.zIndex = "10";
+            overlay.appendChild(box);
+        }
+    }
+
+</script>
+
+</body>
+</html>

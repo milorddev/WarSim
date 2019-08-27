@@ -2,12 +2,7 @@ import { Soldier } from './soldier.js';
 export var Engine;
 (function (Engine) {
     Engine.unitStack = {};
-    Engine.refImages = {
-        coin: new Image(),
-        arrow: new Image(),
-        walkDown: new Image(),
-        walkUp: new Image()
-    };
+    Engine.refImages = {};
     function initEngine() {
         console.log('engine service started');
         this.spawnable = {
@@ -21,10 +16,16 @@ export var Engine;
     }
     Engine.initEngine = initEngine;
     function initRefImages() {
-        this.refImages.coin.src = '../img/coin.png';
-        this.refImages.arrow.src = '../img/arrow.png';
-        this.refImages.walkDown.src = '../img/zelda_walk_down.png';
-        this.refImages.walkUp.src = '../img/zelda_walk_up.png';
+        const addRefImage = (name, path) => {
+            this.refImages[name] = new Image();
+            this.refImages[name].src = path;
+        };
+        addRefImage('coin', '../img/coin.png');
+        addRefImage('arrow', '../img/arrow.png');
+        addRefImage('walkDown', '../img/zelda_walk_down.png');
+        addRefImage('walkUp', '../img/zelda_walk_up.png');
+        addRefImage('attackDown', '../img/zelda_slash_down.png');
+        addRefImage('attackUp', '../img/zelda_slash_up.png');
     }
     Engine.initRefImages = initRefImages;
     function initCanvasElement(canvasElement) {

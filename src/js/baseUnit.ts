@@ -36,16 +36,26 @@ export class BaseUnit extends Base {
     init() {
         this.changeState();
         this.animEngine.newAnimState('walkUp', this.engine.refImages.walkUp, 8, 30, 30);
-        this.animEngine.newAnimState('walkDown', this.engine.refImages.walkDown, 8, 30, 30)
+        this.animEngine.newAnimState('walkDown', this.engine.refImages.walkDown, 8, 30, 32)
+        this.animEngine.newAnimState('attackUp', this.engine.refImages.attackUp, 5, 30, 32)
+        this.animEngine.newAnimState('attackDown', this.engine.refImages.attackDown, 5, 28, 32)
         this.checkAnimationState();
         this.animEngine.startAnimation();
     }
 
     checkAnimationState() {
       if (this.angle < 180 && this.angle > 0) {
-        this.animEngine.changeSprite('walkDown');
+        if(this.state == 'IDLE') {
+          this.animEngine.changeSprite('walkDown');
+        } else if(this.state == 'FIGHT') {
+          this.animEngine.changeSprite('attackDown');
+        }
       } else if (this.angle > 180 && this.angle < 360) {
-        this.animEngine.changeSprite('walkUp');
+        if(this.state == 'IDLE') {
+          this.animEngine.changeSprite('walkUp');
+        } else if(this.state == 'FIGHT') {
+          this.animEngine.changeSprite('attackUp');
+        }
       }
     }
 
@@ -53,7 +63,6 @@ export class BaseUnit extends Base {
       if (this.health <= 0) {
         this.destroy();
       }
-      this.checkAnimationState();
       super.tick();
     }
 
@@ -66,6 +75,7 @@ export class BaseUnit extends Base {
     idle() {
         if (this.state === 'IDLE' && this.health > 0) {
           this.moveForward();
+          this.checkAnimationState();
           this.detectEnemy();
           if (this.stateTimer.idle === false) {
             this.stateTimer.idle = true;
@@ -150,6 +160,7 @@ export class BaseUnit extends Base {
         if (this.attackTarget) {
           if (this.attackTarget.health > 0) {
             if (this.unitType === 'melee') {
+              this.checkAnimationState();
               this.attackTarget.health = Math.round(this.attackTarget.health - this.attackDamage);
             } else if (this.unitType === 'ranged') {
               const arrow = new Projectile(this);

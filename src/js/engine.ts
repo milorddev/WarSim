@@ -14,12 +14,7 @@ export namespace Engine {
       instance: BaseUnit
     }
   };
-  export let refImages: object = {
-    coin: new Image(),
-    arrow: new Image(),
-    walkDown: new Image(),
-    walkUp: new Image()
-  };
+  export let refImages: object = {};
     export function initEngine() {
         console.log('engine service started');
         this.spawnable = {
@@ -33,10 +28,16 @@ export namespace Engine {
     }
 
     export function initRefImages() {
-      this.refImages.coin.src = '../img/coin.png';
-      this.refImages.arrow.src = '../img/arrow.png';
-      this.refImages.walkDown.src = '../img/zelda_walk_down.png';
-      this.refImages.walkUp.src = '../img/zelda_walk_up.png';
+      const addRefImage = (name: string, path: string) => {
+        this.refImages[name] = new Image();
+        this.refImages[name].src = path;
+      };
+      addRefImage('coin', '../img/coin.png');
+      addRefImage('arrow', '../img/arrow.png');
+      addRefImage('walkDown', '../img/zelda_walk_down.png');
+      addRefImage('walkUp', '../img/zelda_walk_up.png');
+      addRefImage('attackDown', '../img/zelda_slash_down.png');
+      addRefImage('attackUp', '../img/zelda_slash_up.png');
     }
 
     export function initCanvasElement(canvasElement: HTMLCanvasElement) {
