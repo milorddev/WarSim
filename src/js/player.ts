@@ -1,8 +1,10 @@
 import { Engine } from "./engine.js";
+import { HUD } from "./hud.js";
 
 export class Player {
 
-    engine: any;
+    engine = Engine;
+    hud: HUD;
     teamIndex: number = 0;
     isPlayer: boolean = false;
     areaHeight: number = 50;
@@ -16,7 +18,6 @@ export class Player {
     };
 
     constructor() {
-        this.engine = Engine;
         this.teamIndex = 0;
         this.isPlayer = false;
         this.areaHeight = 50;
@@ -39,20 +40,21 @@ export class Player {
             this.spawnArea = {
                 x: 0, y: cHeight - this.areaHeight, width: cWidth, height: this.areaHeight
             };
+            this.hud = new HUD(this);
             } else {
                 this.spawnArea = {
                     x: 0, y: 0, width: cWidth, height: this.areaHeight
                 };
             }
-            console.log('spawnArea', this.spawnArea);
+            console.log('spawnArea', this.spawnArea);           
             resolve();
         });
     }
 
     beginMatch() {
         console.log('beginning match');
-        this.spawnUnit(this.engine.spawnable.soldier);
-        this.spawnUnit(this.engine.spawnable.ranger);
+        this.spawnUnit(this.engine.spawnable['soldier']);
+        this.spawnUnit(this.engine.spawnable['ranger']);
     }
 
     spawnUnit(unit) {
@@ -66,5 +68,12 @@ export class Player {
           newUnit.init();
           this.spawnUnit(unit);
         }, unit.interval);
+      }
+
+      addCoin() {
+        this.coins += 1;
+        if (this.isPlayer) {
+          this.hud.updateCoins();
+        }
       }
 }

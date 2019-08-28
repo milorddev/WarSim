@@ -35,10 +35,10 @@ export class BaseUnit extends Base {
 
     init() {
         this.changeState();
-        this.animEngine.newAnimState('walkUp', this.engine.refImages.walkUp, 8, 30, 30);
-        this.animEngine.newAnimState('walkDown', this.engine.refImages.walkDown, 8, 30, 32);
-        this.animEngine.newAnimState('attackUp', this.engine.refImages.attackUp, 5, 30, 32);
-        this.animEngine.newAnimState('attackDown', this.engine.refImages.attackDown, 5, 28, 32);
+        this.animEngine.newAnimState('walkUp', this.engine.refImages['walkUp'], 8, 30, 30);
+        this.animEngine.newAnimState('walkDown', this.engine.refImages['walkDown'], 8, 30, 32);
+        this.animEngine.newAnimState('attackUp', this.engine.refImages['attackUp'], 5, 30, 32);
+        this.animEngine.newAnimState('attackDown', this.engine.refImages['attackDown'], 5, 28, 32);
         this.checkAnimationState();
         this.animEngine.startAnimation();
     }
@@ -172,7 +172,7 @@ export class BaseUnit extends Base {
             }
           }
           if (this.attackTarget.health <= 0) {
-            this.parent.coins += 1;
+            this.parent.addCoin();
             this.state = 'IDLE';
             this.changeState();
           }

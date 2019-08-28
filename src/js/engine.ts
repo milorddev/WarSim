@@ -10,13 +10,7 @@ export namespace Engine {
   export let context: CanvasRenderingContext2D;
   export const unitStack: object = {};
   export let player: Player;
-  export let spawnable: {
-    soldier: {
-      enabled: boolean,
-      interval: number,
-      instance: BaseUnit
-    }
-  };
+  export let spawnable: object = {};
   export let refImages: object = {};
     export function initEngine() {
         console.log('engine service started');
@@ -48,12 +42,12 @@ export namespace Engine {
       addRefImage('attackUp', '../img/zelda_slash_up.png');
     }
 
-    export function initCanvasElement(canvasElement: HTMLCanvasElement) {
+    export function initCanvasElement(canvasElement: HTMLElement) {
         return new Promise<boolean>((resolve, reject) => {
             this.initEngine();
             this.canvas = canvasElement;
             this.canvas.width = document.body.clientWidth;
-            this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.10);
+            this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.20);
             this.context = this.canvas.getContext('2d');
             this.tick();
             resolve(true);
@@ -133,7 +127,7 @@ export namespace Engine {
 
     export function checkCollision(self: Base, radius: number) {
       for (let key in this.unitStack) {
-        const unit: Base = this.unitStack[key];
+        const unit: BaseUnit = this.unitStack[key];
         const xCalc = Math.pow(unit.location.x - self.location.x, 2);
         const yCalc = Math.pow(unit.location.y - self.location.y, 2);
         if (xCalc + yCalc  < Math.pow(radius * 2, 2) && unit.teamIndex !== self.teamIndex) {

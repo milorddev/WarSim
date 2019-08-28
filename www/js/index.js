@@ -2,12 +2,12 @@ import { Engine } from './engine.js';
 import { Player } from './player.js';
 class App {
     constructor() {
+        this.engine = Engine;
         this.numberOfPlayers = 2;
         this.playerList = []; //may not be needed
         document.addEventListener('deviceready', this.onDeviceReady.bind(this));
     }
     onDeviceReady() {
-        this.engine = Engine;
         const canvas = document.getElementById('canvas');
         this.engine.initCanvasElement(canvas).then(() => {
             this.setupGame();

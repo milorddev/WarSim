@@ -14,7 +14,7 @@ export class Projectile extends Base {
     }
 
     init() {
-        this.animEngine.newAnimState('idle', this.engine.refImages.arrow, 1, 300, 150);
+        this.animEngine.newAnimState('idle', this.engine.refImages['arrow'], 1, 300, 150);
         this.animEngine.changeSprite('idle');
         this.animEngine.startAnimation();
     }

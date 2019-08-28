@@ -1,12 +1,13 @@
 import { Engine } from "./engine.js";
+import { HUD } from "./hud.js";
 export class Player {
     constructor() {
+        this.engine = Engine;
         this.teamIndex = 0;
         this.isPlayer = false;
         this.areaHeight = 50;
         this.health = 1000;
         this.coins = 0;
-        this.engine = Engine;
         this.teamIndex = 0;
         this.isPlayer = false;
         this.areaHeight = 50;
@@ -28,6 +29,7 @@ export class Player {
                 this.spawnArea = {
                     x: 0, y: cHeight - this.areaHeight, width: cWidth, height: this.areaHeight
                 };
+                this.hud = new HUD(this);
             }
             else {
                 this.spawnArea = {
@@ -40,8 +42,8 @@ export class Player {
     }
     beginMatch() {
         console.log('beginning match');
-        this.spawnUnit(this.engine.spawnable.soldier);
-        this.spawnUnit(this.engine.spawnable.ranger);
+        this.spawnUnit(this.engine.spawnable['soldier']);
+        this.spawnUnit(this.engine.spawnable['ranger']);
     }
     spawnUnit(unit) {
         setTimeout(() => {
@@ -54,6 +56,12 @@ export class Player {
             newUnit.init();
             this.spawnUnit(unit);
         }, unit.interval);
+    }
+    addCoin() {
+        this.coins += 1;
+        if (this.isPlayer) {
+            this.hud.updateCoins();
+        }
     }
 }
 //# sourceMappingURL=player.js.map

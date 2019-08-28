@@ -105,8 +105,12 @@ export class AnimEngine {
     animationLoop() { // this could run forever, make sure its cleaned up
         if (this.isPlaying === true) {
             setTimeout(() => {
-                this.nextFrame();
-                this.animationLoop();
+                if (this.currentSprite) {
+                    this.nextFrame();
+                    this.animationLoop();
+                } else {
+                    this.stopAnimation();
+                }
             }, this.animSpeed);
         }
     }

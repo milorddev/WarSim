@@ -3,7 +3,7 @@ import { AnimEngine } from './animEngine.js';
 
 export class Base {
 
-    engine: any;
+    engine = Engine;
     animEngine: AnimEngine;
     uuid:string;
     size: number;
@@ -13,7 +13,6 @@ export class Base {
     angle: number;
     
     constructor() {
-        this.engine = Engine;
         this.size = 32;
         this.location = {x: 0, y: 0};
         this.teamIndex = 0;

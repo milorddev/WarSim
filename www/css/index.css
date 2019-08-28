@@ -31,3 +31,15 @@ body {
     image-rendering: optimize-contrast;
     -ms-interpolation-mode: nearest-neighbor;
 }
+
+#player-status-bar {
+    height: 10%;
+    width: 100%;
+    background-color: white;
+}
+
+#player-unit-bar {
+    height: 10%;
+    width: 100%;
+    background-color: #919191;
+}

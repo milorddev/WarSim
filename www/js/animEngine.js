@@ -70,8 +70,13 @@ export class AnimEngine {
     animationLoop() {
         if (this.isPlaying === true) {
             setTimeout(() => {
-                this.nextFrame();
-                this.animationLoop();
+                if (this.currentSprite) {
+                    this.nextFrame();
+                    this.animationLoop();
+                }
+                else {
+                    this.stopAnimation();
+                }
             }, this.animSpeed);
         }
     }

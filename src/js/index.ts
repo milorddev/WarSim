@@ -3,7 +3,7 @@ import { Player } from './player.js';
 
 class App {
 
-  engine: any;
+  engine = Engine;
   numberOfPlayers: number = 2;
   playerList: Array<Player> = [] //may not be needed
 
@@ -12,7 +12,6 @@ class App {
     }
 
     onDeviceReady() {
-        this.engine = Engine;
         const canvas = document.getElementById('canvas');
         this.engine.initCanvasElement(canvas).then( () => {
             this.setupGame();
