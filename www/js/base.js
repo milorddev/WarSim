@@ -22,6 +22,8 @@ export class Base {
         }
     }
     destroy() {
+        this.animEngine.destroy();
+        this.animEngine = null;
         delete this.engine.unitStack[this.uuid];
     }
 }

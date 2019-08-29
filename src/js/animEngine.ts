@@ -53,6 +53,12 @@ export class AnimEngine {
         this.animations[stateName] = sprite;
     }
 
+    destroy() {
+        this.bufferCanvas = null;
+        this.bufferContext = null;
+        this.currentSprite = null;
+    }
+
     changeSprite(stateName: string) {
         this.currentSprite = this.animations[stateName];
     }
