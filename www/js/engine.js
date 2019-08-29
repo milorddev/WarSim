@@ -40,7 +40,7 @@ export var Engine;
             this.initEngine();
             this.canvas = canvasElement;
             this.canvas.width = document.body.clientWidth;
-            this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.20);
+            this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.10);
             this.context = this.canvas.getContext('2d');
             this.tick();
             resolve(true);

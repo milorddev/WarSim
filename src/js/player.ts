@@ -20,7 +20,7 @@ export class Player {
     constructor() {
         this.teamIndex = 0;
         this.isPlayer = false;
-        this.areaHeight = 50;
+        this.areaHeight = 0;
         this.health = 1000;
         this.coins = 0;
         this.spawnArea = {
@@ -53,12 +53,14 @@ export class Player {
 
     beginMatch() {
         console.log('beginning match');
-        this.spawnUnit(this.engine.spawnable['soldier']);
-        this.spawnUnit(this.engine.spawnable['ranger']);
+        // if (!this.isPlayer) {
+        //     this.spawnUnit(this.engine.spawnable['soldier']);
+        //     this.spawnUnit(this.engine.spawnable['ranger']);
+        // }
     }
 
     spawnUnit(unit) {
-        setTimeout(() => {
+        // setTimeout(() => {
           const newUnit = new unit.instance(this);
           newUnit.teamIndex = this.teamIndex;
           newUnit.location = {
@@ -66,8 +68,8 @@ export class Player {
             y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
           };
           newUnit.init();
-          this.spawnUnit(unit);
-        }, unit.interval);
+        //   this.spawnUnit(unit);
+        // }, unit.interval);
       }
 
       addCoin() {
