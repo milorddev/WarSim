@@ -1,5 +1,6 @@
 import { Soldier } from './soldier.js';
 import { Ranger } from './ranger.js';
+import { Tent } from './tent.js';
 export var Engine;
 (function (Engine) {
     Engine.unitStack = {};
@@ -17,6 +18,11 @@ export var Engine;
                 enabled: true,
                 interval: 1500,
                 instance: Ranger
+            },
+            tent: {
+                enabled: true,
+                interval: 5000,
+                instance: Tent
             }
         };
         this.initRefImages();
@@ -33,6 +39,7 @@ export var Engine;
         addRefImage('walkUp', '../img/zelda_walk_up.png');
         addRefImage('attackDown', '../img/zelda_slash_down.png');
         addRefImage('attackUp', '../img/zelda_slash_up.png');
+        addRefImage('tent', '../img/tent_icon.png');
     }
     Engine.initRefImages = initRefImages;
     function initCanvasElement(canvasElement) {
@@ -60,14 +67,20 @@ export var Engine;
     }
     Engine.clearFrame = clearFrame;
     function updateFrame() {
-        const keys = Object.keys(this.unitStack);
-        for (var i in keys) {
-            const unit = this.unitStack[keys[i]];
+        const unitArray = Object.keys(this.unitStack).map(key => this.unitStack[key]).sort((a, b) => {
+            if (a.location.y > b.location.y) {
+                return 1;
+            }
+            else {
+                return -1;
+            }
+        });
+        unitArray.forEach(unit => {
             if (unit) {
                 unit.tick();
                 this.drawFrame(unit);
             }
-        }
+        });
     }
     Engine.updateFrame = updateFrame;
     function drawFrame(unit) {

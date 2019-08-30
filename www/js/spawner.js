@@ -1,5 +1,7 @@
-export class Spawner {
+import { Base } from "./base.js";
+export class Spawner extends Base {
     constructor(parent) {
+        super();
         this.parent = parent;
     }
     spawnUnit(unit) {

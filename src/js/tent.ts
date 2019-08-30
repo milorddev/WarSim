@@ -1,13 +1,15 @@
 import { Spawner } from './spawner.js';
-import { BaseUnit } from './baseUnit.js';
+import { Soldier } from './soldier.js';
 
 export class Tent extends Spawner {
-    unit: BaseUnit;
     constructor(parent) {
         super(parent);
     }
 
-    initSpawn() {
-        this.spawnUnit(this.unit);
+    init() {
+        this.animEngine.newAnimState('tent', this.engine.refImages['tent'], 1, 578, 465);
+        this.animEngine.changeSprite('tent');
+        this.animEngine.startAnimation();
+        this.spawnUnit(this.parent.spawnable['soldier']);
     }
 }

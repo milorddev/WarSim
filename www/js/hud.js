@@ -33,7 +33,7 @@ export class HUD {
         unitText.innerHTML = unitName;
         unitBox.appendChild(unitText);
         this.unitBar.appendChild(unitBox);
-        unitBox.addEventListener('click', () => this.parent.spawnUnit(this.engine.spawnable[unitName]));
+        unitBox.addEventListener('click', () => this.parent.spawnUnit(this.parent.spawnable[unitName]));
     }
 }
 //# sourceMappingURL=hud.js.map

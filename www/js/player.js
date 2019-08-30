@@ -6,11 +6,14 @@ export class Player {
         this.teamIndex = 0;
         this.isPlayer = false;
         this.areaHeight = 50;
+        this.areaOffset = 32;
         this.health = 1000;
         this.coins = 0;
+        this.spawnable = {};
         this.teamIndex = 0;
         this.isPlayer = false;
-        this.areaHeight = 0;
+        this.areaHeight = 50;
+        this.areaOffset = 32;
         this.health = 1000;
         this.coins = 0;
         this.spawnArea = {
@@ -27,13 +30,13 @@ export class Player {
             if (this.isPlayer) {
                 // box on bottom of canvas
                 this.spawnArea = {
-                    x: 0, y: cHeight - this.areaHeight, width: cWidth, height: this.areaHeight
+                    x: 0, y: cHeight - (this.areaHeight + this.areaOffset), width: cWidth - this.areaOffset, height: this.areaHeight
                 };
                 this.hud = new HUD(this);
             }
             else {
                 this.spawnArea = {
-                    x: 0, y: 0, width: cWidth, height: this.areaHeight
+                    x: 0, y: 0, width: cWidth - this.areaOffset, height: this.areaHeight
                 };
             }
             console.log('spawnArea', this.spawnArea);
@@ -41,14 +44,10 @@ export class Player {
         });
     }
     beginMatch() {
+        this.spawnable = this.engine.spawnable;
         console.log('beginning match');
-        // if (!this.isPlayer) {
-        //     this.spawnUnit(this.engine.spawnable['soldier']);
-        //     this.spawnUnit(this.engine.spawnable['ranger']);
-        // }
     }
     spawnUnit(unit) {
-        // setTimeout(() => {
         const newUnit = new unit.instance(this);
         newUnit.teamIndex = this.teamIndex;
         newUnit.location = {
@@ -56,8 +55,6 @@ export class Player {
             y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
         };
         newUnit.init();
-        //   this.spawnUnit(unit);
-        // }, unit.interval);
     }
     addCoin() {
         this.coins += 1;

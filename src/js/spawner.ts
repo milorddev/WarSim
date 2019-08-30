@@ -1,8 +1,10 @@
-import { Player } from "./player";
+import { Player } from "./player.js";
+import { Base } from "./base.js";
 
-export class Spawner {
+export class Spawner extends Base {
     parent: Player;
     constructor(parent: Player) {
+        super();
         this.parent = parent;
     }
 

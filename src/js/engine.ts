@@ -3,6 +3,7 @@ import { BaseUnit } from './baseUnit.js';
 import { Base } from './base.js';
 import { Ranger } from './ranger.js';
 import { Player } from './player.js';
+import { Tent } from './tent.js';
 
 export namespace Engine {
 
@@ -24,6 +25,11 @@ export namespace Engine {
             enabled: true,
             interval: 1500,
             instance: Ranger
+          },
+          tent: {
+            enabled: true,
+            interval: 5000,
+            instance: Tent
           }
         };
         this.initRefImages();
@@ -40,6 +46,7 @@ export namespace Engine {
       addRefImage('walkUp', '../img/zelda_walk_up.png');
       addRefImage('attackDown', '../img/zelda_slash_down.png');
       addRefImage('attackUp', '../img/zelda_slash_up.png');
+      addRefImage('tent', '../img/tent_icon.png')
     }
 
     export function initCanvasElement(canvasElement: HTMLElement) {
@@ -67,14 +74,19 @@ export namespace Engine {
     }
     
     export function updateFrame() {
-      const keys = Object.keys(this.unitStack);
-      for(var i in keys){
-        const unit = this.unitStack[keys[i]];
+      const unitArray = Object.keys(this.unitStack).map(key => this.unitStack[key]).sort((a, b) => {
+        if (a.location.y > b.location.y) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+      unitArray.forEach(unit => {
         if (unit) {
           unit.tick();
           this.drawFrame(unit);
         }
-      }
+      });
     }
     
     export function drawFrame(unit: Base) {
