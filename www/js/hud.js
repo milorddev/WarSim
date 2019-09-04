@@ -15,6 +15,10 @@ export class HUD {
         this.createNewUnitBox('ranger', '../img/ranger_icon.png');
         this.createNewUnitBox('tent', '../img/tent_icon.png');
     }
+    update() {
+        this.updateHealth();
+        this.updateCoins();
+    }
     updateHealth() {
         this.health.innerHTML = `Health: ${this.parent.health}`;
     }

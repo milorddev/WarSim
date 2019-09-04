@@ -19,16 +19,19 @@ export namespace Engine {
           soldier: {
             enabled: true,
             interval: 1000,
+            cost: 1,
             instance: Soldier
           },
           ranger: {
             enabled: true,
             interval: 1500,
+            cost: 10,
             instance: Ranger
           },
           tent: {
             enabled: true,
             interval: 5000,
+            cost: 100,
             instance: Tent
           }
         };

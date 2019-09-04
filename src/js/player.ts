@@ -10,7 +10,7 @@ export class Player {
     areaHeight: number = 50;
     areaOffset: number = 32;
     health: number = 1000;
-    coins: number = 0;
+    coins: number = 10;
     spawnArea: {
         x: number,
         y: number,
@@ -25,7 +25,7 @@ export class Player {
         this.areaHeight = 50;
         this.areaOffset = 32;
         this.health = 1000;
-        this.coins = 0;
+        this.coins = 5;
         this.spawnArea = {
             x: 0,
             y: 0,
@@ -60,6 +60,9 @@ export class Player {
     }
 
     spawnUnit(unit) {
+        if (this.coins - unit.cost >= 0) {
+            this.coins = this.coins - unit.cost;
+            this.hud.updateCoins();
           const newUnit = new unit.instance(this);
           newUnit.teamIndex = this.teamIndex;
           newUnit.location = {
@@ -67,6 +70,9 @@ export class Player {
             y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
           };
           newUnit.init();
+        } else {
+            console.log('cannot buy unit');
+        }
       }
 
       addCoin() {

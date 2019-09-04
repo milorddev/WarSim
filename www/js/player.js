@@ -8,14 +8,14 @@ export class Player {
         this.areaHeight = 50;
         this.areaOffset = 32;
         this.health = 1000;
-        this.coins = 0;
+        this.coins = 10;
         this.spawnable = {};
         this.teamIndex = 0;
         this.isPlayer = false;
         this.areaHeight = 50;
         this.areaOffset = 32;
         this.health = 1000;
-        this.coins = 0;
+        this.coins = 5;
         this.spawnArea = {
             x: 0,
             y: 0,
@@ -48,13 +48,20 @@ export class Player {
         console.log('beginning match');
     }
     spawnUnit(unit) {
-        const newUnit = new unit.instance(this);
-        newUnit.teamIndex = this.teamIndex;
-        newUnit.location = {
-            x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
-            y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
-        };
-        newUnit.init();
+        if (this.coins - unit.cost >= 0) {
+            this.coins = this.coins - unit.cost;
+            this.hud.updateCoins();
+            const newUnit = new unit.instance(this);
+            newUnit.teamIndex = this.teamIndex;
+            newUnit.location = {
+                x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
+                y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
+            };
+            newUnit.init();
+        }
+        else {
+            console.log('cannot buy unit');
+        }
     }
     addCoin() {
         this.coins += 1;
