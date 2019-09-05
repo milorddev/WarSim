@@ -18,19 +18,22 @@ export namespace Engine {
         this.spawnable = {
           soldier: {
             enabled: true,
+            name: 'soldier',
             interval: 1000,
             cost: 1,
             instance: Soldier
           },
           ranger: {
             enabled: true,
+            name: 'ranger',
             interval: 1500,
             cost: 10,
             instance: Ranger
           },
           tent: {
             enabled: true,
-            interval: 5000,
+            name: 'tent',
+            interval: 60000,
             cost: 100,
             instance: Tent
           }

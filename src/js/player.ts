@@ -60,16 +60,22 @@ export class Player {
     }
 
     spawnUnit(unit) {
-        if (this.coins - unit.cost >= 0) {
+        if (this.coins - unit.cost >= 0 && unit.enabled) {
             this.coins = this.coins - unit.cost;
             this.hud.updateCoins();
-          const newUnit = new unit.instance(this);
-          newUnit.teamIndex = this.teamIndex;
-          newUnit.location = {
-            x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
-            y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
-          };
-          newUnit.init();
+            this.hud.disableUnitBox(unit.name);
+            unit.enabled = false;
+            setTimeout(() => {
+                this.hud.enableUnitBox(unit.name);
+                unit.enabled = true;
+            }, unit.interval)
+            const newUnit = new unit.instance(this);
+            newUnit.teamIndex = this.teamIndex;
+            newUnit.location = {
+                x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
+                y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
+            };
+            newUnit.init();
         } else {
             console.log('cannot buy unit');
         }

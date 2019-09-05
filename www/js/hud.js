@@ -28,6 +28,7 @@ export class HUD {
     createNewUnitBox(unitName, imagePath) {
         const unitBox = document.createElement('div');
         unitBox.className += " unitBox";
+        unitBox.id = unitName;
         const unitIcon = document.createElement('img');
         unitIcon.src = imagePath;
         unitIcon.className += " unitIcon";
@@ -38,6 +39,14 @@ export class HUD {
         unitBox.appendChild(unitText);
         this.unitBar.appendChild(unitBox);
         unitBox.addEventListener('click', () => this.parent.spawnUnit(this.parent.spawnable[unitName]));
+    }
+    disableUnitBox(unitName) {
+        const unitBox = document.getElementById(unitName);
+        unitBox.style.backgroundColor = 'rgb(33, 163, 206)';
+    }
+    enableUnitBox(unitName) {
+        const unitBox = document.getElementById(unitName);
+        unitBox.style.backgroundColor = 'lightblue';
     }
 }
 //# sourceMappingURL=hud.js.map

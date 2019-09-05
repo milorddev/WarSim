@@ -48,9 +48,15 @@ export class Player {
         console.log('beginning match');
     }
     spawnUnit(unit) {
-        if (this.coins - unit.cost >= 0) {
+        if (this.coins - unit.cost >= 0 && unit.enabled) {
             this.coins = this.coins - unit.cost;
             this.hud.updateCoins();
+            this.hud.disableUnitBox(unit.name);
+            unit.enabled = false;
+            setTimeout(() => {
+                this.hud.enableUnitBox(unit.name);
+                unit.enabled = true;
+            }, unit.interval);
             const newUnit = new unit.instance(this);
             newUnit.teamIndex = this.teamIndex;
             newUnit.location = {
