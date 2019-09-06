@@ -10,6 +10,7 @@ export namespace Engine {
   export let canvas: HTMLCanvasElement;
   export let context: CanvasRenderingContext2D;
   export const unitStack: object = {};
+  export let playerList: object = {};
   export let player: Player;
   export let spawnable: object = {};
   export let refImages: object = {};

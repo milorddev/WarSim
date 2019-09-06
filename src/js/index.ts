@@ -5,7 +5,6 @@ class App {
 
   engine = Engine;
   numberOfPlayers: number = 2;
-  playerList: Array<Player> = [] //may not be needed
 
     constructor() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this));
@@ -23,21 +22,20 @@ class App {
           const player = new Player();
           player.isPlayer = true;
           player.teamIndex = 1;
-          this.playerList.push(player);
+          this.engine.playerList['player'] = player;
           this.engine.player = player;
     
           const enemy = new Player();
           enemy.teamIndex = 2;
           enemy.isPlayer = false;
-          this.playerList.push(enemy);
-          const inits = [];
-          this.playerList.forEach(item => {
-            inits.push(item.init());
-          });
+          this.engine.playerList['enemy'] = enemy;
+          const inits = [
+            this.engine.playerList['player'].init(),
+            this.engine.playerList['enemy'].init()
+          ];
           Promise.all(inits).then(ready => {
-            this.playerList.forEach(item => {
-              item.beginMatch();
-            });
+            this.engine.playerList['player'].beginMatch();
+            this.engine.playerList['enemy'].beginMatch();
           });
         }
       }

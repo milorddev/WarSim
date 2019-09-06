@@ -9,6 +9,7 @@ export class Base {
     size: number;
     teamIndex: number;
     location: {x: number, y: number};
+    playerPayload = {delivered: false, amount: 10};
     attackDamage: number;
     angle: number;
     
@@ -29,9 +30,6 @@ export class Base {
 
     protected tick() { 
         // if out of bounds, remove unit
-        if (this.location.y > this.engine.canvas.height || this.location.y < 0) {
-            this.destroy();
-        }
     }
 
     protected destroy() {

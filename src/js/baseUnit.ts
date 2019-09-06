@@ -11,7 +11,6 @@ export class BaseUnit extends Base {
   unitType: string;
   state: string;
   stateTimer: {idle: boolean, charge: boolean, fight: boolean};
-  
   movementSpeed: number;
   attackTarget: BaseUnit;
   attackRadius: number;
@@ -65,6 +64,10 @@ export class BaseUnit extends Base {
       if (this.health <= 0) {
         this.destroy();
       }
+      if (this.location.y > this.engine.canvas.height + this.size || this.location.y < -this.size) {
+        this.destroy();
+        this.deliverPayload();
+      }
       super.tick();
     }
 
@@ -72,6 +75,19 @@ export class BaseUnit extends Base {
         this.attackTarget = null;
         this.state = 'NONE';
         super.destroy();
+    }
+
+    deliverPayload() {
+      if(!this.playerPayload.delivered)
+      {
+        if (this.parent.isPlayer) {
+          this.engine.playerList['enemy'].health -= this.playerPayload.amount;
+        } else {
+          this.engine.playerList['player'].health -= this.playerPayload.amount;
+        }
+        this.playerPayload.delivered = true;
+        console.log(this.engine.playerList);
+      }
     }
 
     idle() {

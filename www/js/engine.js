@@ -4,6 +4,7 @@ import { Tent } from './tent.js';
 export var Engine;
 (function (Engine) {
     Engine.unitStack = {};
+    Engine.playerList = {};
     Engine.spawnable = {};
     Engine.refImages = {};
     function initEngine() {

@@ -7,6 +7,7 @@ export class Ranger extends BaseUnit {
         this.movementSpeed = 35;
         this.attackRadius = 60;
         this.attackDamage = 25 + (Math.random() * 10);
+        this.playerPayload.amount = 20;
     }
 }
 //# sourceMappingURL=ranger.js.map

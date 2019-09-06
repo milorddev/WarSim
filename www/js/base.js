@@ -3,6 +3,7 @@ import { AnimEngine } from './animEngine.js';
 export class Base {
     constructor() {
         this.engine = Engine;
+        this.playerPayload = { delivered: false, amount: 10 };
         this.size = 32;
         this.location = { x: 0, y: 0 };
         this.teamIndex = 0;
@@ -17,9 +18,6 @@ export class Base {
     }
     tick() {
         // if out of bounds, remove unit
-        if (this.location.y > this.engine.canvas.height || this.location.y < 0) {
-            this.destroy();
-        }
     }
     destroy() {
         this.animEngine.destroy();
