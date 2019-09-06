@@ -1,6 +1,3 @@
-import { Soldier } from './soldier.js';
-import { Ranger } from './ranger.js';
-import { Tent } from './tent.js';
 export var Engine;
 (function (Engine) {
     Engine.unitStack = {};
@@ -11,25 +8,13 @@ export var Engine;
         console.log('engine service started');
         this.spawnable = {
             soldier: {
-                enabled: true,
-                name: 'soldier',
-                interval: 1000,
-                cost: 1,
-                instance: Soldier
+                tally: { player: 0, enemy: 0 },
             },
             ranger: {
-                enabled: true,
-                name: 'ranger',
-                interval: 1500,
-                cost: 10,
-                instance: Ranger
+                tally: { player: 0, enemy: 0 },
             },
             tent: {
-                enabled: true,
-                name: 'tent',
-                interval: 60000,
-                cost: 100,
-                instance: Tent
+                tally: { player: 0, enemy: 0 },
             }
         };
         this.initRefImages();

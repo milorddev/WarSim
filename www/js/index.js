@@ -1,5 +1,6 @@
 import { Engine } from './engine.js';
 import { Player } from './player.js';
+import { Bot } from './bot.js';
 class App {
     constructor() {
         this.engine = Engine;
@@ -18,11 +19,13 @@ class App {
             player.isPlayer = true;
             player.teamIndex = 1;
             this.engine.playerList['player'] = player;
+            player.name = 'player';
             this.engine.player = player;
-            const enemy = new Player();
+            const enemy = new Bot();
             enemy.teamIndex = 2;
             enemy.isPlayer = false;
             this.engine.playerList['enemy'] = enemy;
+            enemy.name = 'enemy';
             const inits = [
                 this.engine.playerList['player'].init(),
                 this.engine.playerList['enemy'].init()

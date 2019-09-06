@@ -1,5 +1,8 @@
 import { Engine } from "./engine.js";
 import { HUD } from "./hud.js";
+import { Soldier } from "./soldier.js";
+import { Ranger } from "./ranger.js";
+import { Tent } from "./tent.js";
 
 export class Player {
 
@@ -7,6 +10,7 @@ export class Player {
     hud: HUD;
     teamIndex: number = 0;
     isPlayer: boolean = false;
+    name: string;
     areaHeight: number = 50;
     areaOffset: number = 32;
     health: number = 1000;
@@ -25,12 +29,38 @@ export class Player {
         this.areaHeight = 50;
         this.areaOffset = 32;
         this.health = 1000;
-        this.coins = 5;
+        this.coins = 10;
         this.spawnArea = {
             x: 0,
             y: 0,
             width: 0,
             height: 0
+        };
+        this.spawnable = {
+            soldier: {
+                enabled: true,
+                name: 'soldier',
+                interval: 1000,
+                cost: 1,
+                tally: {player: 0, enemy: 0},
+                instance: Soldier
+            },
+            ranger: {
+                enabled: true,
+                name: 'ranger',
+                interval: 1500,
+                cost: 5,
+                tally: {player: 0, enemy: 0},
+                instance: Ranger
+            },
+            tent: {
+                enabled: true,
+                name: 'tent',
+                interval: 60000,
+                cost: 100,
+                tally: {player: 0, enemy: 0},
+                instance: Tent
+            }
         };
     }
 
@@ -55,29 +85,38 @@ export class Player {
     }
 
     beginMatch() {
-        this.spawnable = this.engine.spawnable;
-        console.log('beginning match');
+        // this.spawnable = this.engine.spawnable;
+        // console.log('beginning match', this.name, this.spawnable);
     }
 
     spawnUnit(unit) {
-        if (this.coins - unit.cost >= 0 && unit.enabled) {
-            this.coins = this.coins - unit.cost;
-            this.hud.updateCoins();
-            this.hud.disableUnitBox(unit.name);
-            unit.enabled = false;
-            setTimeout(() => {
-                this.hud.enableUnitBox(unit.name);
-                unit.enabled = true;
-            }, unit.interval)
-            const newUnit = new unit.instance(this);
-            newUnit.teamIndex = this.teamIndex;
-            newUnit.location = {
-                x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
-                y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
-            };
-            newUnit.init();
+        if (this.coins - unit.cost >= 0) {
+            if(unit.enabled) {
+                this.coins = this.coins - unit.cost;
+                if(this.isPlayer) {
+                    this.hud.updateCoins();
+                    this.hud.disableUnitBox(unit.name);
+                }
+                unit.enabled = false;
+                setTimeout(() => {
+                    if(this.isPlayer) {
+                        this.hud.enableUnitBox(unit.name);
+                    }
+                    unit.enabled = true;
+                }, unit.interval)
+                const newUnit = new unit.instance(this);
+                newUnit.teamIndex = this.teamIndex;
+                newUnit.location = {
+                    x: this.spawnArea.x + (Math.random() * this.spawnArea.width),
+                    y: this.spawnArea.y + (Math.random() * this.spawnArea.height)
+                };
+                this.engine.spawnable[unit.name].tally[this.name] += 1
+                newUnit.init();
+            } else {
+                console.log(this.name, 'unit not ready');
+            }
         } else {
-            console.log('cannot buy unit');
+            console.log(this.name, 'cannot buy this unit, would be below balance');
         }
       }
 

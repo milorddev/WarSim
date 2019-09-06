@@ -65,14 +65,15 @@ export class BaseUnit extends Base {
         this.destroy();
       }
       if (this.location.y > this.engine.canvas.height + this.size || this.location.y < -this.size) {
-        this.destroy();
         this.deliverPayload();
+        this.destroy();
       }
       super.tick();
     }
 
     protected destroy() {
         this.attackTarget = null;
+        this.health = 0;
         this.state = 'NONE';
         super.destroy();
     }
@@ -84,9 +85,9 @@ export class BaseUnit extends Base {
           this.engine.playerList['enemy'].health -= this.playerPayload.amount;
         } else {
           this.engine.playerList['player'].health -= this.playerPayload.amount;
+          this.engine.playerList['player'].hud.updateHealth();
         }
         this.playerPayload.delivered = true;
-        console.log(this.engine.playerList);
       }
     }
 
