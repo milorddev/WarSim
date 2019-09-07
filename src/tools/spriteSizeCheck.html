@@ -52,7 +52,6 @@
     imageUploadBtn.addEventListener('change',(e) => {
         viewbox.setAttribute('src', '');
         toBase64(e.target.files[0]).then(imagefile => {
-            console.log(imagefile);
             viewbox.setAttribute('src', imagefile);
         });
     });
@@ -60,7 +59,6 @@
     document.addEventListener('change', changeBox);
 
     function changeBox() {
-        console.log('changing');
         overlay.innerHTML = "";
         for(var i = 0; i < parseInt(spriteCount.value); i++) {
             const box = document.createElement('div');

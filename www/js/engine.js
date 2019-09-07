@@ -32,6 +32,7 @@ export var Engine;
         addRefImage('attackDown', '../img/zelda_slash_down.png');
         addRefImage('attackUp', '../img/zelda_slash_up.png');
         addRefImage('tent', '../img/tent_icon.png');
+        addRefImage('crystal', '../img/crystal.png');
     }
     Engine.initRefImages = initRefImages;
     function initCanvasElement(canvasElement) {
@@ -41,6 +42,7 @@ export var Engine;
             this.canvas.width = document.body.clientWidth;
             this.canvas.height = document.body.clientHeight - (document.body.clientHeight * 0.10);
             this.context = this.canvas.getContext('2d');
+            this.canvas.addEventListener('touchstart', e => this.touchEvent(e));
             this.tick();
             resolve(true);
         });
@@ -54,6 +56,17 @@ export var Engine;
         });
     }
     Engine.tick = tick;
+    function touchEvent(e) {
+        const touch = {
+            x: e.touches[0].clientX,
+            y: e.touches[0].clientY
+        };
+        const instance = this.checkPointCollision(touch.x, touch.y, e.touches[0].radiusX);
+        if (instance) {
+            instance.clicked();
+        }
+    }
+    Engine.touchEvent = touchEvent;
     function clearFrame() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
@@ -81,7 +94,7 @@ export var Engine;
             if (unit.teamIndex !== 1) {
                 unit.animEngine.bufferContext.filter = 'hue-rotate(180deg)';
             }
-            this.context.drawImage(buffer, unit.location.x - unit.animEngine.animOffset.x, unit.location.y - unit.animEngine.animOffset.y);
+            this.context.drawImage(buffer, unit.location.x - unit.size / 2, unit.location.y - unit.size / 2);
         }
     }
     Engine.drawFrame = drawFrame;
@@ -123,5 +136,17 @@ export var Engine;
         return undefined;
     }
     Engine.checkCollision = checkCollision;
+    function checkPointCollision(x, y, radius) {
+        for (let key in this.unitStack) {
+            const unit = this.unitStack[key];
+            const xCalc = Math.pow(unit.location.x - x, 2);
+            const yCalc = Math.pow(unit.location.y - y, 2);
+            if (xCalc + yCalc < Math.pow(radius * 2, 2)) {
+                return unit;
+            }
+        }
+        return undefined;
+    }
+    Engine.checkPointCollision = checkPointCollision;
 })(Engine || (Engine = {}));
 //# sourceMappingURL=engine.js.map

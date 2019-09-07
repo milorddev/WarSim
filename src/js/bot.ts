@@ -7,6 +7,7 @@ export class Bot extends Player {
     constructor() {
         super();
         console.log('bot created', this.coins);
+        this.coins = 9999999;
     }
 
     beginMatch() {
@@ -36,9 +37,12 @@ export class Bot extends Player {
     matchPlayer() {
         const rateKeys = Object.keys(this.spawnRate);
         rateKeys.forEach(i => {
-            for(var j = 0; j < this.spawnRate[i]; j++) {
-                console.log(this.spawnable[i]);
-                this.spawnUnit(this.spawnable[i]);
+            if (this.playerSpawnCount[i] > 0) {
+                const rand = Math.round(Math.random());
+                for(var j = 0; j < this.spawnRate[i] + rand; j++) {
+                    console.log(this.spawnable[i]);
+                    this.spawnUnit(this.spawnable[i]);
+                }
             }
         });
     }

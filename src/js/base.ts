@@ -37,4 +37,8 @@ export class Base {
         this.animEngine = null;
         delete this.engine.unitStack[this.uuid];
     }
+
+    protected clicked() {
+        console.log('clicked');
+    }
 }

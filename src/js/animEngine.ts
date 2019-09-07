@@ -87,6 +87,7 @@ export class AnimEngine {
     }
 
     drawFrame() {
+        console.log(this.currentSprite);
         this.bufferContext.drawImage(
             this.currentSprite.image,
             this.currentSprite.width * this.currentSprite.index,
