@@ -15,7 +15,6 @@ export namespace Engine {
   export let spawnable: object = {};
   export let refImages: object = {};
     export function initEngine() {
-        console.log('engine service started');
         this.spawnable = {
           soldier: {
             tally: {player: 0, enemy: 0},

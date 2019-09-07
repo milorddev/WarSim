@@ -38,7 +38,5 @@ export class Base {
         delete this.engine.unitStack[this.uuid];
     }
 
-    protected clicked() {
-        console.log('clicked');
-    }
+    protected clicked() {}
 }

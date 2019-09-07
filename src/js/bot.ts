@@ -6,7 +6,6 @@ export class Bot extends Player {
     spawnRate:object = {};
     constructor() {
         super();
-        console.log('bot created', this.coins);
         this.coins = 9999999;
     }
 
@@ -40,7 +39,6 @@ export class Bot extends Player {
             if (this.playerSpawnCount[i] > 0) {
                 const rand = Math.round(Math.random());
                 for(var j = 0; j < this.spawnRate[i] + rand; j++) {
-                    console.log(this.spawnable[i]);
                     this.spawnUnit(this.spawnable[i]);
                 }
             }

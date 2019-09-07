@@ -68,14 +68,10 @@ export class Player {
                     x: 0, y: 0, width: cWidth - this.areaOffset, height: this.areaHeight
                 };
             }
-            console.log('spawnArea', this.spawnArea);
             resolve();
         });
     }
-    beginMatch() {
-        // this.spawnable = this.engine.spawnable;
-        // console.log('beginning match', this.name, this.spawnable);
-    }
+    beginMatch() { }
     spawnUnit(unit) {
         if (this.coins - unit.cost >= 0) {
             if (unit.enabled) {

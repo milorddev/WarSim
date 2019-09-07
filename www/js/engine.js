@@ -5,7 +5,6 @@ export var Engine;
     Engine.spawnable = {};
     Engine.refImages = {};
     function initEngine() {
-        console.log('engine service started');
         this.spawnable = {
             soldier: {
                 tally: { player: 0, enemy: 0 },

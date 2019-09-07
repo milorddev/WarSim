@@ -24,8 +24,6 @@ export class Base {
         this.animEngine = null;
         delete this.engine.unitStack[this.uuid];
     }
-    clicked() {
-        console.log('clicked');
-    }
+    clicked() { }
 }
 //# sourceMappingURL=base.js.map
