@@ -3,57 +3,85 @@ export class AnimEngine {
         this.animations = {};
         this.isPlaying = false;
         this.animSpeed = 60;
+        this.spriteRotation = 0;
         this.unit = unit;
         this.bufferCanvas = document.createElement('canvas');
-        console.log('size', this.unit.size);
-        this.bufferCanvas.width = this.unit.size;
-        this.bufferCanvas.height = this.unit.size;
+        this.bufferCanvas.width = this.unit.size * 2;
+        this.bufferCanvas.height = this.unit.size * 2;
         this.animOffset = {
             x: Math.round(this.unit.size / 2),
             y: Math.round(this.unit.size / 2)
         };
         this.bufferContext = this.bufferCanvas.getContext('2d');
     }
-    newAnimState(stateName, spritePath, spriteLength, frameWidth, frameHeight) {
-        const image = new Image(); // this part could be made more efficient
+    newAnimState(stateName, refImage, spriteLength, frameWidth, frameHeight, isLooping = true) {
         if (!frameWidth) {
             frameWidth = this.unit.size;
         }
         if (!frameHeight) {
             frameHeight = this.unit.size;
         }
-        image.src = spritePath;
+        const spriteType = (spriteLength == 1) ? 'static' : 'animated';
         const sprite = {
             width: frameWidth,
             height: frameHeight,
             length: spriteLength,
+            type: spriteType,
             index: 0,
-            image: image
+            image: refImage,
+            isLooping: isLooping
         };
         this.animations[stateName] = sprite;
+    }
+    destroy() {
+        this.bufferCanvas = null;
+        this.bufferContext = null;
+        this.currentSprite = null;
     }
     changeSprite(stateName) {
         this.currentSprite = this.animations[stateName];
     }
+    rotateImage() {
+        this.bufferContext.translate(this.unit.size, this.unit.size);
+        this.bufferContext.rotate(this.spriteRotation * Math.PI / 180);
+    }
     nextFrame() {
         this.bufferContext.clearRect(0, 0, this.bufferCanvas.width, this.bufferCanvas.height);
-        this.bufferContext.drawImage(this.currentSprite.image, this.currentSprite.width * this.currentSprite.index, 0, this.currentSprite.width, this.currentSprite.height, 0, 0, this.unit.size, this.unit.size);
-        if (this.currentSprite.index >= this.currentSprite.length - 1) {
-            this.currentSprite.index = 0;
-        }
-        else {
-            this.currentSprite.index += 1;
+        this.bufferContext.save();
+        this.rotateImage();
+        this.drawFrame();
+        this.bufferContext.restore();
+        if (this.currentSprite.type == 'animated') {
+            if (this.currentSprite.index >= this.currentSprite.length - 1) {
+                this.currentSprite.index = 0;
+                if (!this.currentSprite.isLooping) {
+                    this.stopAnimation();
+                }
+            }
+            else {
+                this.currentSprite.index += 1;
+            }
         }
     }
+    drawFrame() {
+        this.bufferContext.drawImage(this.currentSprite.image, this.currentSprite.width * this.currentSprite.index, 0, this.currentSprite.width, this.currentSprite.height, -this.unit.size / 2, -this.unit.size / 2, this.unit.size, this.unit.size);
+    }
     startAnimation() {
-        this.isPlaying = true;
-        this.animationLoop();
+        if (!this.isPlaying) {
+            this.isPlaying = true;
+            this.animationLoop();
+        }
     }
     animationLoop() {
         if (this.isPlaying === true) {
             setTimeout(() => {
-                this.nextFrame();
-                this.animationLoop();
+                if (this.currentSprite) {
+                    this.nextFrame();
+                    this.animationLoop();
+                }
+                else {
+                    this.stopAnimation();
+                }
             }, this.animSpeed);
         }
     }

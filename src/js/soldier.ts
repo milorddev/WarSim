@@ -1,13 +1,12 @@
-import { Base } from './base.js';
-import { Engine } from './engine.js';
+import { BaseUnit } from './baseUnit.js';
 
-export class Soldier extends Base {
-    constructor() {
-        super();
-        this.engine = Engine;
+export class Soldier extends BaseUnit {
+    constructor(parent) {
+        super(parent);
         this.name = 'soldier';
         this.unitType = 'melee';
-        // this.movementSpeed = 2;
-        this.attackDamage = 25 + (Math.random() * 10);
+        this.movementSpeed = 20;
+        this.attackDamage = 30 + (Math.random() * 15);
+        this.playerPayload.amount = 10; 
     }
 }

@@ -31,3 +31,47 @@ body {
     image-rendering: optimize-contrast;
     -ms-interpolation-mode: nearest-neighbor;
 }
+
+#player-status-bar {
+    height: 10%;
+    width: 100%;
+    position: absolute;
+    background: transparent;
+}
+
+#player-unit-bar {
+    height: 10%;
+    width: 100%;
+    background-color: #919191;
+    overflow: scroll;
+    white-space: nowrap;
+}
+
+.unitBox {
+    border: 5px solid black;
+    height: calc(10vh - 5px);
+    width: calc(10vh - 5px);
+    background-color: lightblue;
+    display: inline-block;
+    margin: 0px 1px;
+}
+
+.unitBox:active {
+    background-color: rgb(33, 163, 206); 
+}
+
+.unitIcon {
+    height: 80%;
+    margin: 0px auto;
+    display: block;
+}
+
+.unitText {
+    font-weight: bold;
+    color: white;
+    text-shadow: black 0px 0px 4px;
+    font-size: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 1;
+}

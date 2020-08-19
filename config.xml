@@ -23,5 +23,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <engine name="browser" spec="^6.0.0" />
+    <engine name="ios" spec="^5.0.1" />
+    <engine name="android" spec="^8.0.0" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
 </widget>
